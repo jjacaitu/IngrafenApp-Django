@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django import forms
+
 # Create your models here.
 
 IMPRESION_CHOICES = (("NO","Sin impresion"),("FCT","Full color tiro"),("FCTR","Full color tiro y retiro"),("PT","Pantone Tiro"),("PTR","Pantone Tiro y Retiro"))
@@ -76,7 +77,7 @@ class CotizacionesSolicitadas(models.Model):
     fecha_completada = models.DateTimeField(auto_now=True)
     cotizador = models.CharField(max_length=20, blank=True)
     numero_cotizacion = models.CharField(max_length=20, blank=True)
-    imagen = models.ImageField(upload_to=settings.MEDIA_DIR, blank=True, null=True, default=settings.STATIC_DIR + "LOGO-01.jpg")
+    imagen = models.ImageField(upload_to="uploads/", blank=True, null=True)
 #AUMENTAR PARA SUBIR IMAGEN DE LO QUE SE DESEA COTIZAR
 
 
