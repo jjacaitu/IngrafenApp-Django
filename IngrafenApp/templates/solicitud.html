@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="container">
+  {% if solicitado %}
+  <h2>COTIZACION SOLICITADA!</h2>
+  {% else %}
+  <h2>SOLICITUD DE COTIZACION</h2>
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered solido">
+      <tr>
+        <td><label for="">Cliente:</label></td>
+    <td>{{ cotizacion.nombre_cliente }}</td>
+    <td> <label for="">Nombre de promocion: </label></td>
+    <td>{{ cotizacion.trabajo }}</td>
+
+      </tr>
+    <tr>
+      <td><label for="">Tipo de trabajo:</label></td>
+      <td><select class="" name="opciones" onchange="tipo_trabajo(this)">
+      <option value=""></option>
+      {% for items in cot_modelo %}
+      <option value="{{ items }}" label="{{ items }}">{{ items }} {{ items.hojas_interiores }}</option>
+
+
+      {% endfor %}
+
+      </select>
+    </td>
+
+      <td><label for="">Cantidad:</label></td>
+      <td>{{ cotizacion.cantidad }}</td>
+
+
+      </tr>
+      <tr>
+        <td> <label for="">Medida:</label> </td>
+        <td> {{ cotizacion.medida_alto }} <strong>X </strong>{{ cotizacion.medida_ancho }}</td>
+        <td><label for="">Material:</label></td>
+      <td>{{ cotizacion.material }}</td>
+
+      </tr>
+      <tr id="interiores">
+
+
+          <td> <label for="">Medida hojas interiores:</label> </td>
+          <td> {{ cotizacion.medida_alto_interiores }} <strong>X </strong>{{ cotizacion.medida_ancho_interiores }}</td>
+          <td><label for="">Material hojas interiores:</label></td>
+          <td>{{ cotizacion.material_interiores }}</td>
+
+      </tr>
+      <tr>
+        <td> <label for="">Tipo de impresion:</label> </td>
+        <td> {{ cotizacion.impresion }} </td>
+        <td colspan="2" rowspan="3" style="color:darkblue">  {{ cotizacion.imagen }} </td>
+      </tr>
+      <tr>
+        <td> <label for="">Troquelado:</label> </td>
+        <td> {{ cotizacion.troquelado }} </td>
+      </tr>
+      <tr>
+        <td> <label for="">UV:</label> </td>
+        <td> {{ cotizacion.uv }} </td>
+      </tr>
+      <tr>
+        <td> <label for="">laminado: </label> </td>
+        <td> {{ cotizacion.laminado }} </td>
+        <td colspan="2"> <textarea name="detalles" rows="5" cols="60" placeholder="Detalles adicionales:"></textarea> </td>
+      </tr>
+    </table>
+    <div class="container">
+
+    </div>
+    <div class="container">
+
+
+    <input type="submit" name="" class="btn btn-primary" value="SOLICITAR">
+    </div>
+  </form>
+{% endif %}
+
+</div>
+{% endblock %}

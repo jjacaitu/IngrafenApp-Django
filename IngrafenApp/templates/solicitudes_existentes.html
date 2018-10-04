@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+{% if buscar == False %}
+<div class="container">
+{% if cotizaciones_existentes.exists %}
+<h2>COTIZACIONES SOLICITADAS:</h2>
+<table class="table table-striped table-bordered">
+<thead class="thead-dark">
+
+
+  <th>VENDEDOR</th>
+  <th>CLIENTE</th>
+  <th>MATERIAL</th>
+  <th>TIPO DE TRABAJO</th>
+  <th>CANTIDAD</th>
+  <th>MEDIDA</th>
+
+  <th># SOLICITUD</th>
+  </thead>
+{% for cotizaciones in cotizaciones_existentes %}
+<form enctype="multipart/form-data" method="POST">
+{% csrf_token %}
+
+
+<tr>
+
+
+{% if cotizaciones.vendedor == user.username or user.categoria == "COT" or user.categoria == "ADM" %}
+  <td>{{ cotizaciones.vendedor }} </td>
+  <td>{{ cotizaciones.nombre_cliente }} </td>
+  <td>{{ cotizaciones.material }} </td>
+  <td>{{ cotizaciones.tipo_trabajo }} </td>
+  <td>{{ cotizaciones.cantidad }} </td>
+  <td>{{ cotizaciones.medida_alto }} X {{ cotizaciones.medida_ancho }} </td>
+
+  <td>  <input type="submit" name="numero" class="btn btn-primary" value={{cotizaciones.num_solicitud}}></td>
+  </tr>
+  </form>
+  {% endif %}
+  {% endfor %}
+  </div>
+  {% else %}
+  <h2>NO HAY COTIZACIONES</h2>
+  {% endif %}
+  {% else %}
+  <div class="container">
+
+
+  {% for cotizacion in cotizacion_existentes %}
+  <h2>Solicitud de cotizacion #{{cotizacion.num_solicitud}}</h2>
+  <table class="table table-bordered solido">
+    <tr>
+      <td><label for="">Cliente:</label></td>
+  <td>{{ cotizacion.nombre_cliente }}</td>
+  <td> <label for="">Nombre de promocion: </label></td>
+  <td>{{ cotizacion.trabajo }}</td>
+
+    </tr>
+  <tr>
+    <td><label for="">Tipo de trabajo:</label></td>
+    <td>{{ cotizacion.tipo_trabajo }}
+  </td>
+
+    <td><label for="">Cantidad:</label></td>
+    <td>{{ cotizacion.cantidad }}</td>
+
+
+    </tr>
+    <tr>
+      <td> <label for="">Medida:</label> </td>
+      <td> {{ cotizacion.medida_alto }} <strong>X </strong>{{ cotizacion.medida_ancho }}</td>
+      <td><label for="">Material:</label></td>
+    <td>{{ cotizacion.material }}</td>
+
+    </tr>
+    {% if cotizacion.material_interiores != none %}
+    <tr>
+
+
+        <td> <label for="">Medida hojas interiores:</label> </td>
+        <td> {{ cotizacion.medida_alto_interiores }} <strong>X </strong>{{ cotizacion.medida_ancho_interiores }}</td>
+        <td><label for="">Material hojas interiores:</label></td>
+        <td>{{ cotizacion.material_interiores }}</td>
+
+    </tr>
+    {% endif %}
+    <tr>
+      <td> <label for="">Tipo de impresion:</label> </td>
+      <td> {{ cotizacion.impresion }} </td>
+      <td colspan="2" rowspan="3">  <img src="{{ cotizacion.imagen.url }}" alt="Sin imagen adjunta"> </td>
+    </tr>
+    <tr>
+      <td> <label for="">Troquelado:</label> </td>
+      <td> {{ cotizacion.troquelado }} </td>
+    </tr>
+    <tr>
+      <td> <label for="">UV:</label> </td>
+      <td> {{ cotizacion.uv }} </td>
+    </tr>
+    <tr>
+      <td> <label for="">laminado: </label> </td>
+      <td> {{ cotizacion.laminado }} </td>
+      <td colspan="2"> <textarea name="detalles" rows="5" cols="60" placeholder="Detalles adicionales:" readonly>{{ cotizacion.detalles }}</textarea> </td>
+    </tr>
+  </table>
+
+
+  {% endfor %}
+  </div>
+  </table>
+  <form enctype="multipart/form-data" method="POST">
+
+    {% csrf_token %}
+    {% for cotizacion in cotizaciones_existentes %}
+  <input type="hidden" name="numero1" value={{cotizacion.num_solicitud}}>
+  {% endfor %}
+  <div class="container">
+
+{% if user.categoria == "COT" or user.categoria == "ADM" %}
+  <label for="cotizacion_papyrus"># COTIZACION</label>
+  <input type="text" name="cotizacion_papyrus">
+
+  <input type="submit" name="boton_completar" value="COMPLETAR" class="btn btn-primary">
+  {% endif %}
+  <input type="submit" name="boton_regresar" value="REGRESAR" class="btn btn-primary">
+  </form>
+</div>
+
+</table>
+
+{% endif %}
+
+{% endblock %}

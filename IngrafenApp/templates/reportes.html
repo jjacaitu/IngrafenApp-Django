@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  {% if user.categoria == "ADM" %}
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+  <input type="text" id="parametro" name="parametro" value="" style="display:none" placeholder="Buscar por:">
+  <select id="cl" name="cl" style="display:none">
+    {% for clientes in clientes_creados %}
+    <option value="{{ clientes.nombre }}">{{ clientes.nombre }}</option>
+{% endfor %}
+  </select>
+  <select id="tr" class="opciones_trabajos" name="tr" style="display:none">
+    {% for trabajos in trabajos_creados %}
+    <option value="{{ trabajos.trabajo }}">{{ trabajos.trabajo }}</option>
+{% endfor %}
+  </select>
+  <select id="cot" class="cotizadores" name="cot" style="display:none">
+    {% for cotizador in cotizadores %}
+    <option value="{{ cotizador.username }}">{{ cotizador.username }}</option>
+{% endfor %}
+  </select>
+  <select id="ven" class="vendedores" name="ven" style="display:none">
+    {% for vendedor in vendedores %}
+    <option value="{{ vendedor.username }}">{{ vendedor.username }}</option>
+{% endfor %}
+  </select>
+  <select  class="seleccion" name="seleccion" onchange="filtros_busqueda(this)">
+    <option value="Todo">Todo</option>
+    <option value="Cliente">Cliente</option>
+    <option value="Trabajo">Tipo de trabajo</option>
+
+    <option value="Promocion">Nombre de promocion</option>
+    {% if user.categoria == "ADM" %}
+    <option value="Vendedor">Vendedor</option>
+
+    {% endif %}
+
+
+
+  </select>
+  <select class="" name="tipo" style="display:initial">
+    <option id="totales" value="solo_totales">Solo totales</option>
+    <option id="b_por_cliente"value="por_cliente">Por cliente</option>
+    <option id="b_por_trabajo"value="por_tipo_trabajo">Por tipo de trabajo</option>
+
+  </select>
+
+
+
+
+  <label for="desde">DESDE:</label>
+
+  <input type="date" name="desde" value="">
+  <label for="hasta">HASTA:</label>
+  <input type="date" name="hasta" value="">
+  <input type="submit" name="buscar" value="BUSCAR" class="btn btn-primary">
+  {% else %}
+  <h2>USTED NO TIENE ACCESO A ESTA PAGINA</h2>
+</div>
+{% endif %}
+
+<p>{{texto_busqueda| linebreaks}}</p>
+<table class="table table-bordered table-striped">
+<thead class="thead-dark">
+  <th>Usuario</th>
+  <th>{{header}}</th>
+  <th>Tiempo promedio</th>
+
+  <th>cantidad</th>
+</thead>
+<tbody>
+
+
+{% for usuario,todos in resultados_dict.items %}
+<tr >
+  <td rowspan="{{todos|length}}">{{usuario}}</td>
+
+  {% for trabajos,items in todos.items %}
+  <td>{{trabajos}}</td>
+  {% for key, valor in items.items %}
+  <td>{{valor}}</td>
+
+
+
+  {% endfor %}
+  </tr>
+
+  {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+  {% if creado %}
+  <h2>MATERIAL INGRESADO CON EXITO!</h2>
+  {% elif user.categoria == "ADM" %}
+  <h2>INGRESO DE MATERIALES:</h2>
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ material.as_p }}
+    <input type="submit" name="" value="CREAR" class="btn btn-primary">
+  </form>
+{% endif %}
+
+</div>
+{% endblock %}
