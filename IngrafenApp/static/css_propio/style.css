@@ -108,3 +108,8 @@ td{
   max-height: 90vh;
 
 }
+
+.upload{
+  width: 100px;
+  height: auto;
+}

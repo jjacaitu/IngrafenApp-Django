@@ -36,6 +36,8 @@ urlpatterns = [
     path("compañia/", views.quienes_somos,name="quienes_somos"),
     path("servicios/",views.servicios,name="servicios"),
     path("reportes/",views.reportes,name="reportes"),
+
+
 ]
 
 

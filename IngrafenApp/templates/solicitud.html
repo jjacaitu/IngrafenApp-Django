@@ -3,71 +3,440 @@
 {% load static %}
 <div class="container">
   {% if solicitado %}
-  <h2>COTIZACION SOLICITADA!</h2>
+  <h2>COTIZACION #{{numero_solicitud.num_solicitud }} SOLICITADA!</h2>
   {% else %}
+  {% if busqueda and cotizacion_encontrada == "NO HAY" %}
+  <h2>COTIZACION A REUTILIZAR NO ENCONTRADA</h2>
+  {% else %}
+   {% if busqueda and cotizacion_encontrada.vendedor != user.username %}
+   <h2>COTIZACION A REUTILIZAR NO ENCONTRADA</h2>
+   {% else %}
   <h2>SOLICITUD DE COTIZACION</h2>
+
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <div class="container">
+
+
+    <label for=""># Cotizacion a reutilizar: </label>
+    <input type="text" name="cot_reutilizar" value="">
+    <input type="submit" name="Buscar" value="Buscar" class="btn btn-primary">
+
+  </form>
+  </div>
+
   <form enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     <table class="table table-bordered solido">
       <tr>
-        <td><label for="">Cliente:</label></td>
-    <td>{{ cotizacion.nombre_cliente }}</td>
-    <td> <label for="">Nombre de promocion: </label></td>
-    <td>{{ cotizacion.trabajo }}</td>
+        <td colspan="2"><label for="">Cliente:</label></td>
+    <td colspan="2">{{ cotizacion.nombre_cliente }}</td>
+    <td colspan="2"> <label for="">Nombre de promocion: </label></td>
+    <td colspan="2">{{ cotizacion.trabajo }}</td>
 
       </tr>
     <tr>
-      <td><label for="">Tipo de trabajo:</label></td>
-      <td><select class="" name="opciones" onchange="tipo_trabajo(this)">
+      <td colspan="2"><label for="">Tipo de trabajo:</label></td>
+      <td colspan="2"><select class="" name="opciones" onchange="verificar_tipo_trabajo(this)" required>
+        {% if busqueda %}
+        <option value="{{ cotizacion_encontrada.tipo_trabajo }}">{{ cotizacion_encontrada.tipo_trabajo }}</option>
+        {% else %}
       <option value=""></option>
-      {% for items in cot_modelo %}
-      <option value="{{ items }}" label="{{ items }}">{{ items }} {{ items.hojas_interiores }}</option>
+      {% endif %}
+      {% for items in tipo_trabajo %}
+      <option value="{{ items }}" label="{{ items }}">{{ items }}</option>
 
 
       {% endfor %}
 
       </select>
+      {% for items in tipo_trabajo %}
+      <input type="hidden" id="{{ items }}" value="{{ items.materiales_adicionales }}" name="{{ items.insumo }}">
+      {% endfor %}
     </td>
 
-      <td><label for="">Cantidad:</label></td>
-      <td>{{ cotizacion.cantidad }}</td>
+      <td colspan="2"><label for="">Cantidad:</label></td>
+      <td colspan="2">{{ cotizacion.cantidad }}</td>
 
 
+      </tr>
+
+      </table>
+      <table class="table table-bordered solido">
+
+        <thead>
+          <th colspan="8" style="color:darkblue;text-align:center"><strong>MATERIALES</strong></th>
+        </thead>
+      <tr>
+        <td><label for="">Material</label></td>
+        <td> <label for="">Descripcion</label> </td>
+        <td> <label for="">Medida</label> </td>
+        <td> <label for="">Impresion</label> </td>
+        <td> <label for="">Uv</label>  </td>
+        <td> <label for="">Laminado</label> </td>
+        <td> <label for="">Troquelado</label> </td>
       </tr>
       <tr>
-        <td> <label for="">Medida:</label> </td>
-        <td> {{ cotizacion.medida_alto }} <strong>X </strong>{{ cotizacion.medida_ancho }}</td>
-        <td><label for="">Material:</label></td>
-      <td>{{ cotizacion.material }}</td>
+        <td> <select  name="material1" required>
+          {% if busqueda %}
+          <option value="{{ cotizacion_encontrada.material}}">{{ cotizacion_encontrada.material }}</option>
+          {% else %}
+        <option value=""></option>
+        {% endif %}
+          {% for material in materiales %}
+          <option value="{{ material }}">{{ material }}</option>
+{% endfor %}
+        </select> </td>
+        {% if busqueda %}
+        <td> <input type="text" name="descripcion" value="{{cotizacion_encontrada.descripcion_material }}" required> </td>
+        {% else %}
+    <td> <input type="text" name="descripcion" value="" required> </td>
+      {% endif %}
+      {% if busqueda %}
+      <td> <input type="number" name="alto1" value="{{cotizacion_encontrada.medida_alto}}" required> X <input type="number" name="ancho1" value="{{cotizacion_encontrada.medida_ancho}}" required> </td>
+      {% else %}
+  <td> <input type="number" name="alto1" value="" required> X <input type="number" name="ancho1" value="" required> </td>
+    {% endif %}
 
-      </tr>
-      <tr id="interiores">
+        <td>
+          <label for="">Tiro:</label>
+          <select class="" name="impresiont1" onchange="pantonet1(this)" required>
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_tiro}}">{{ cotizacion_encontrada.impresion_tiro }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonest1" id="num_pantonest1" value="" placeholder="# pantones" style="display:none">
+          <label for="">Retiro:</label>
+          <select class="" name="impresionr1" onchange="pantoner1(this)" required>
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_retiro}}">{{ cotizacion_encontrada.impresion_retiro }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonesr1" id="num_pantonesr1" value="" placeholder="# pantones" style="display:none">
+         </td>
+        <td>
+          <select class="" name="uv1" required>
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.uv}}">{{ cotizacion_encontrada.uv }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin UV">Sin UV</option>
+            <option value="Uv tiro">Uv Tiro</option>
+            <option value="Uv tiro y retiro">Uv tiro y retiro</option>
+            <option value="Sectorizado tiro">Sectorizado tiro</option>
+            <option value="Sectorizado tiro y retiro">Sectorizado tiro y retiro</option>
+
+          </select>
+          </td>
+          <td>
+          <select class="" name="laminado1" required>
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.laminado}}">{{ cotizacion_encontrada.laminado }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin laminado">Sin laminado</option>
+            <option value="Laminado mate tiro">Laminado mate tiro</option>
+            <option value="Laminado mate tiro y retiro">Laminado mate tiro y retiro</option>
+            <option value="Laminado brillo tiro">Laminado brillo tiro</option>
+            <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
 
 
-          <td> <label for="">Medida hojas interiores:</label> </td>
-          <td> {{ cotizacion.medida_alto_interiores }} <strong>X </strong>{{ cotizacion.medida_ancho_interiores }}</td>
-          <td><label for="">Material hojas interiores:</label></td>
-          <td>{{ cotizacion.material_interiores }}</td>
+          </select></td>
+<td>
+          <select class="" name="troquel1" onchange="troquel_existente1_fun(this)" required>
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.troquelado}}">{{ cotizacion_encontrada.troquelado }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin troquelar">Sin troquelar</option>
+            <option value="Troquel nuevo">Troquel nuevo</option>
+            <option value="Troquel existente">Troquel existente</option>
+            <option value="Solo grafado">Solo grafado</option>
+            <option value="En planas para desprender">En planas para desprender</option>
 
+          </select>
+          <input type="text" name="troquel_existente1" id="troquel_existente1" value="" placeholder="referencia troquel" style="display:none">
+
+         </td>
+         <td id="boton_agregar"> <img  src="{% static "mas.png "%}" alt="" onclick="agregar1()" style="width:30px;height:auto"> </td>
       </tr>
-      <tr>
-        <td> <label for="">Tipo de impresion:</label> </td>
-        <td> {{ cotizacion.impresion }} </td>
-        <td colspan="2" rowspan="3" style="color:darkblue">  {{ cotizacion.imagen }} </td>
+
+      {% if busqueda and cotizacion_encontrada.material2 %}
+      <tr id="luno">
+      {% else %}
+      <tr id="luno" style="display:none">
+      {% endif %}
+
+        <td> <select class="" name="material2" id="material1">
+          {% if busqueda %}
+          <option value="{{ cotizacion_encontrada.material2}}">{{ cotizacion_encontrada.material2 }}</option>
+          {% else %}
+        <option value=""></option>
+        {% endif %}
+          {% for material in materiales %}
+          <option value="{{ material }}">{{ material }}</option>
+{% endfor %}
+
+        </select> </td>
+        {% if busqueda %}
+        <td> <input type="text" name="descripcion2" value="{{cotizacion_encontrada.descripcion_material2}}" id="descripcion1"> </td>
+        {% else %}
+      <td> <input type="text" name="descripcion2" value="" id="descripcion1"> </td>
+      {% endif %}
+      {% if busqueda %}
+      <td> <input type="number" name="alto2" value="{{cotizacion_encontrada.medida_alto_2}}" id="alto1"> X <input type="number" value="{{cotizacion_encontrada.medida_ancho_2}}" name="ancho2" id="ancho1"> </td>
+      {% else %}
+    <td> <input type="number" name="alto2" value="0" id="alto1"> X <input type="number" value="0" name="ancho2" id="ancho1"> </td>
+    {% endif %}
+
+        <td>
+
+          <label for="">Tiro:</label>
+          <select class="" name="impresiont2" onchange="pantonet2(this)" id="impresiont1">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_tiro2}}">{{ cotizacion_encontrada.impresion_tiro2 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonest2" id="num_pantonest2" value="" placeholder="# pantones" style="display:none">
+          <label for="">Retiro:</label>
+          <select class="" name="impresionr2"  onchange="pantoner2(this)" id="impresionr1">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_retiro2}}">{{ cotizacion_encontrada.impresion_retiro2 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonesr2" id="num_pantonesr2" value="" placeholder="# pantones" style="display:none">
+         </td>
+        <td>
+          <select class="" name="uv2" id="uv1">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.uv2}}">{{ cotizacion_encontrada.uv2 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin UV">Sin UV</option>
+            <option value="Uv tiro">Uv Tiro</option>
+            <option value="Uv tiro y retiro">Uv tiro y retiro</option>
+            <option value="Sectorizado tiro">Sectorizado tiro</option>
+            <option value="Sectorizado tiro y retiro">Sectorizado tiro y retiro</option>
+          </select>
+          </td>
+          <td>
+          <select class="" name="laminado2" id="laminado1">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.laminado2}}">{{ cotizacion_encontrada.laminado2 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin laminado">Sin laminado</option>
+            <option value="Laminado mate tiro">Laminado mate tiro</option>
+            <option value="Laminado mate tiro y retiro">Laminado mate tiro y retiro</option>
+            <option value="Laminado brillo tiro">Laminado brillo tiro</option>
+            <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
+
+          </select></td>
+<td>
+          <select class="" name="troquel2" id="troquelado1" onchange="troquel_existente2_fun(this)">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.troquelado2}}">{{ cotizacion_encontrada.troquelado2 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin troquelar">Sin troquelar</option>
+            <option value="Troquel nuevo">Troquel nuevo</option>
+            <option value="Troquel existente">Troquel existente</option>
+            <option value="Solo grafado">Solo grafado</option>
+            <option value="En planas para desprender">En planas para desprender</option>
+
+          </select>
+<input type="text" name="troquel_existente2" id="troquel_existente2" value="" placeholder="referencia troquel" style="display:none">
+         </td>
+         <td> <img src="{% static "mas.png "%}" alt="" onclick="agregar2()" style="width:30px;height:auto">
+          <img id="boton_quitar" src="{% static "menos.png "%}" alt="" onclick="quitar1()" style="width:30px;height:auto;margin-top:25px"> </td>
       </tr>
-      <tr>
-        <td> <label for="">Troquelado:</label> </td>
-        <td> {{ cotizacion.troquelado }} </td>
+
+      {% if busqueda and cotizacion_encontrada.material3 %}
+      <tr id="ldos">
+      {% else %}
+      <tr id="ldos" style="display:none">
+      {% endif %}
+
+        <td> <select class="" name="material3" id="material2">
+          {% if busqueda %}
+          <option value="{{ cotizacion_encontrada.material3}}">{{ cotizacion_encontrada.material3 }}</option>
+          {% else %}
+        <option value=""></option>
+        {% endif %}
+          {% for material in materiales %}
+          <option value="{{ material }}">{{ material }}</option>
+          {% endfor %}
+
+        </select> </td>
+        {% if busqueda %}
+        <td> <input type="text" name="descripcion3" value="{{cotizacion_encontrada.descripcion3}}" id="descripcion2"> </td>
+        {% else %}
+      <td> <input type="text" name="descripcion3" value="" id="descripcion2"> </td>
+      {% endif %}
+      {% if busqueda %}
+      <td> <input type="number" name="alto3" value="{{cotizacion_encontrada.medida_alto_3}}" id="alto2"> X <input type="number" name="ancho3" value="{{cotizacion_encontrada.medida_ancho_3}}" id="ancho2"> </td>
+      {% else %}
+      <td> <input type="number" name="alto3" value="0" id="alto2"> X <input type="number" name="ancho3" value="0" id="ancho2"> </td>
+    {% endif %}
+
+        <td>
+
+          <label for="">Tiro:</label>
+          <select class="" name="impresiont3" onchange="pantonet3(this)" id="impresiont2">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_tiro3}}">{{ cotizacion_encontrada.impresion_tiro3 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonest3" id="num_pantonest3" value="" placeholder="# pantones" style="display:none">
+          <label for="">Retiro:</label>
+          <select class="" name="impresionr3" onchange="pantoner3(this)" id="impresionr2">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.impresion_retiro3}}">{{ cotizacion_encontrada.impresion_retiro3 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin impresion">Sin impresion</option>
+            <option value="F/C">F/C</option>
+
+            <option value="Pantones">Pantones</option>
+            <option value="F/C + Pantones">F/C + Pantones</option>
+
+          </select>
+          <input type="text" name="num_pantonesr3" value="" id="num_pantonesr3" placeholder="# pantones" style="display:none">
+         </td>
+        <td>
+          <select class="" name="uv3" id="uv2">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.uv3}}">{{ cotizacion_encontrada.uv3 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin UV">Sin UV</option>
+            <option value="Uv tiro">Uv Tiro</option>
+            <option value="Uv tiro y retiro">Uv tiro y retiro</option>
+            <option value="Sectorizado tiro">Sectorizado tiro</option>
+            <option value="Sectorizado tiro y retiro">Sectorizado tiro y retiro</option>
+          </select>
+          </td>
+          <td>
+          <select class="" name="laminado3" id="laminado2">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.laminado3}}">{{ cotizacion_encontrada.laminado3 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin laminado">Sin laminado</option>
+            <option value="Laminado mate tiro">Laminado mate tiro</option>
+            <option value="Laminado mate tiro y retiro">Laminado mate tiro y retiro</option>
+            <option value="Laminado brillo tiro">Laminado brillo tiro</option>
+            <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
+
+          </select></td>
+<td>
+          <select class="" name="troquel3" id="troquelado2" onchange="troquel_existente3_fun(this)">
+            {% if busqueda %}
+            <option value="{{ cotizacion_encontrada.troquelado3}}">{{ cotizacion_encontrada.troquelado3 }}</option>
+            {% else %}
+          <option value=""></option>
+          {% endif %}
+            <option value="Sin troquelar">Sin troquelar</option>
+            <option value="Troquel nuevo">Troquel nuevo</option>
+            <option value="Troquel existente">Troquel existente</option>
+            <option value="Solo grafado">Solo grafado</option>
+            <option value="En planas para desprender">En planas para desprender</option>
+
+          </select>
+<input type="text" name="troquel_existente3" id="troquel_existente3" value="" placeholder="referencia troquel" style="display:none">
+         </td>
+         <td> <img src="{% static "menos.png "%}" alt="" onclick="quitar2()" style="width:30px;height:auto"> </td>
       </tr>
+
+</table>
+
+<table class="table table-bordered solido">
+
+  <tr>
+    <td>
+      <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sin_cinta" value="sin_cinta" onclick="check()">
+  <label class="form-check-label" for="inlineRadio1">sin cinta</label>
+  </div>
+  <div class="form-check form-check-inline">
+  <input required class="form-check-input" type="radio" name="inlineRadioOptions" id="con_cinta" value="con_cinta" onclick="check()">
+  <label class="form-check-label" for="inlineRadio2">con cinta</label>
+  </div></td>
+  <td> <select class="" id="tipo_cinta" name="tipo_cinta" disabled>
+  <option value="cinta roja">Cinta roja</option>
+  <option value="cinta blanca">Cinta blanca</option>
+
+  </select> <input required type="text" id="cantidad_cintas" name="cantidad_cintas" value="" placeholder="cantidad de cintas" disabled> <label for="">de</label> <input type="text" id="cm_cintas" name="cm_cintas" value="" placeholder="cm de c/cinta" disabled required> </td>
+
+
+    <td id="adicional_row" style="display:none"> <input type="text" id="adicional" name="adicional" value="" placeholder="" ><input type="hidden" id="adicional_texto" name="adicional_texto" value=""> </td>
+
+</tr>
       <tr>
-        <td> <label for="">UV:</label> </td>
-        <td> {{ cotizacion.uv }} </td>
-      </tr>
+
+
+        <td colspan="2" rowspan="2" style="color:darkblue">  {{ cotizacion.imagen }} </td>
+        </tr>
+
+
       <tr>
-        <td> <label for="">laminado: </label> </td>
-        <td> {{ cotizacion.laminado }} </td>
+
+        {% if busqueda %}
+        <td colspan="2"> <textarea name="detalles" rows="5" cols="60" placeholder="Detalles adicionales:">{{cotizacion_encontrada.detalles}}</textarea> </td>
+        {% else %}
         <td colspan="2"> <textarea name="detalles" rows="5" cols="60" placeholder="Detalles adicionales:"></textarea> </td>
-      </tr>
+        {% endif %}
+
+    </tr>
     </table>
     <div class="container">
 
@@ -76,9 +445,11 @@
 
 
     <input type="submit" name="" class="btn btn-primary" value="SOLICITAR">
+
     </div>
   </form>
 {% endif %}
-
+{% endif %}
+{% endif %}
 </div>
 {% endblock %}
