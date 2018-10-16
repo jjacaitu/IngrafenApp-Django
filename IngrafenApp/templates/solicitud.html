@@ -177,7 +177,7 @@
           <input type="text" name="troquel_existente1" id="troquel_existente1" value="" placeholder="referencia troquel" style="display:none">
 
          </td>
-         <td id="boton_agregar"> <img  src="{% static "mas.png "%}" alt="" onclick="agregar1()" style="width:30px;height:auto"> </td>
+         <td id="boton_agregar"> <img  src="{% static "mas.png"%}" alt="+" onclick="agregar1()" style="width:30px;height:auto"> </td>
       </tr>
 
       {% if busqueda and cotizacion_encontrada.material2 %}
@@ -285,8 +285,8 @@
           </select>
 <input type="text" name="troquel_existente2" id="troquel_existente2" value="" placeholder="referencia troquel" style="display:none">
          </td>
-         <td> <img src="{% static "mas.png "%}" alt="" onclick="agregar2()" style="width:30px;height:auto">
-          <img id="boton_quitar" src="{% static "menos.png "%}" alt="" onclick="quitar1()" style="width:30px;height:auto;margin-top:25px"> </td>
+         <td> <img src="{% static "mas.png"%}" alt="+" onclick="agregar2()" style="width:30px;height:auto">
+          <img id="boton_quitar" src="{% static "menos.png"%}" alt="-" onclick="quitar1()" style="width:30px;height:auto;margin-top:25px"> </td>
       </tr>
 
       {% if busqueda and cotizacion_encontrada.material3 %}
@@ -394,7 +394,7 @@
           </select>
 <input type="text" name="troquel_existente3" id="troquel_existente3" value="" placeholder="referencia troquel" style="display:none">
          </td>
-         <td> <img src="{% static "menos.png "%}" alt="" onclick="quitar2()" style="width:30px;height:auto"> </td>
+         <td> <img src="{% static "menos.png"%}" alt="-" onclick="quitar2()" style="width:30px;height:auto"> </td>
       </tr>
 
 </table>

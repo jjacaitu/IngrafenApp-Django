@@ -3,11 +3,15 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django import forms
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 # Create your models here.
 
 IMPRESION_CHOICES = (("NO","Sin impresion"),("FCT","Full color tiro"),("FCTR","Full color tiro y retiro"),("PT","Pantone Tiro"),("PTR","Pantone Tiro y Retiro"))
 TIPO_PR_CHOICES = (("OF","OFFSET"),("G","GIGANTOGRAFIA"),("OF","OFFSET Y GIGANTOGRAFIA"))
-CATEGORIA_USUARIO = (("ADM","ADMINISTRADOR"),("VEN","VENDEDOR"),("COT","COTIZADOR"),("PRO","PRODUCCION"))
+CATEGORIA_USUARIO = (("ADM","ADMINISTRADOR"),("VEN","VENDEDOR"),("COT","COTIZADOR"),("PRO","PRODUCCION"),("DIS","DISEÑO"))
 UV_CHOICES = (("SIN","SIN UV"),("UVT","UV TIRO"),("UVTR","UV TIRO Y RETIRO"),("UVST","UV SECTORIZADO TIRO"),("UVSTR","UV SECTORIZADO TIRO Y RETIRO"))
 LAMINADO_CHOICES = (("SIN","SIN LAMINADO"),("LBT","LAMINADO BRILLO TIRO"),("LBTR","LAMINADO BRILLO TIRO Y RETIRO"),("LMT","LAMINADO MATE TIRO"),("LMTR","LAMINADO MATE TIRO Y RETIRO"))
 TROQUELADO_CHOICES = (("SIN","SIN TROQUELAR"),("TRN","TROQUEL NUEVO"),("TRE","TROQUEL EXISTENTE"),("MC","EN PLANAS CON MEDIO CORTE"))
@@ -18,7 +22,7 @@ class Usuarios(AbstractUser):
 
 
 class Materiales(models.Model):
-    material = models.CharField(max_length=40)
+    material = models.CharField(max_length=40, unique=True)
     usuario = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
@@ -30,7 +34,7 @@ class Materiales(models.Model):
     #COLOCAR OTROS ASPECTOS DE VENDEDOR
 
 class TipoDeTrabajo(models.Model):
-    trabajo = models.CharField(max_length=40)
+    trabajo = models.CharField(max_length=40, unique=True)
     materiales_adicionales = models.BooleanField(default=False)
     insumo = models.CharField(max_length=20,blank=True)
     usuario = models.CharField(max_length=20, blank=True)
@@ -43,7 +47,7 @@ class TipoDeTrabajo(models.Model):
         return self.trabajo
 
 class Clientes(models.Model):
-    nombre = models.CharField(max_length=40)
+    nombre = models.CharField(max_length=40, unique=True)
     vendedor_asociado = models.ForeignKey(Usuarios, on_delete=models.PROTECT)
     usuario = models.CharField(max_length=20, blank=True)
     def save(self):
@@ -99,6 +103,23 @@ class CotizacionesSolicitadas(models.Model):
     imagen = models.ImageField(upload_to="uploads/", blank=True, null=True, default="none")
 #AUMENTAR PARA SUBIR IMAGEN DE LO QUE SE DESEA COTIZAR
 
+    def save(self, *args, **kwargs):
+        if not self.num_solicitud:
+            self.imagen = self.compressImage(self.imagen)
+        super(CotizacionesSolicitadas, self).save(*args, **kwargs)
+
+    def compressImage(self,imagen):
+        imageTemporary = Image.open(imagen)
+        outputIoStream = BytesIO()
+        imageTemporaryResized = imageTemporary.resize( (1020,573) )
+        imageTemporary.save(outputIoStream , format='JPEG', quality=60)
+        outputIoStream.seek(0)
+        ultima_solicitud = CotizacionesSolicitadas.objects.all().last()
+        if ultima_solicitud == None:
+            imagen = InMemoryUploadedFile(outputIoStream,'ImageField', "solicitud # %s.jpg" % (1), 'image/jpeg', sys.getsizeof(outputIoStream), None)
+        else:
+            imagen = InMemoryUploadedFile(outputIoStream,'ImageField', "solicitud # %s.jpg" % (ultima_solicitud.num_solicitud + 1), 'image/jpeg', sys.getsizeof(outputIoStream), None)
+        return imagen
 
 
 

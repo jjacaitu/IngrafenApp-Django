@@ -67,7 +67,7 @@
   <th>TIPO DE TRABAJO</th>
   <th>CANTIDAD</th>
   <th>MEDIDA</th>
-  <th>TIPO DE IMPRESION</th>
+
   <th>FECHA SOLICITADA</th>
   <th>FECHA COTIZADA</th>
   <th>COTIZADOR</th>
@@ -75,7 +75,7 @@
   <th>BOTON</th>
 </thead>
 {% for cotizacion in cotizaciones_completadas %}
-{% if cotizaciones.vendedor == user.username or user.categoria == "COT" or user.categoria == "ADM" %}
+{% if cotizacion.vendedor == user.username or user.categoria == "COT" or user.categoria == "ADM" %}
 <tr>
 
   <form enctype="multipart/form-data" method="POST">
@@ -89,7 +89,7 @@
   <td>{{ cotizacion.tipo_trabajo }} </td>
   <td>{{ cotizacion.cantidad }} </td>
   <td>{{ cotizacion.medida_ancho }} x {{ cotizacion.medida_alto }} </td>
-  <td>{{ cotizacion.impresion }}</td>
+
   <td>{{ cotizacion.fecha_solicitada }}</td>
   <td>{{ cotizacion.fecha_completada }}</td>
   <td>{{ cotizacion.cotizador }}</td>

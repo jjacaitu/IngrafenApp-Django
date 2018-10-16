@@ -26,7 +26,7 @@ class Clientes(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(Clientes, self).__init__(*args, **kwargs)
-        self.fields['vendedor_asociado'].queryset = Usuarios.objects.filter(categoria="VEN")
+        self.fields['vendedor_asociado'].queryset = Usuarios.objects.filter(categoria="VEN") | Usuarios.objects.filter(categoria="ADM")
 
 
 class Solicitud_cot(ModelForm):
