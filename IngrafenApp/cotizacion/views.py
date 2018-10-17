@@ -308,7 +308,7 @@ def solicitudes_existentes(request):
         buscar=False
         numero_1 = request.POST.get("numero1")
         cotizacion = CotizacionesSolicitadas.objects.get(num_solicitud=numero_1)
-        print("esto es!" + str(cotizacion))
+        
         cotizacion.fecha_completada = datetime.now()
         cotizacion.cotizador = str(request.user)
         cotizacion.numero_cotizacion = request.POST.get("cotizacion_papyrus")
@@ -486,7 +486,7 @@ def reportes(request):
 
         fecha -= relativedelta(years=+1)
         fecha_hasta = datetime(datetime.now().year, mes, 31).date()
-        
+
         cotizadores = models.Usuarios.objects.filter(categoria="COT").filter(date_joined__range=[str(fecha),str(fecha_hasta)])
         vendedores = models.Usuarios.objects.filter(categoria="VEN").filter(date_joined__range=[str(fecha),str(fecha_hasta)])
 
