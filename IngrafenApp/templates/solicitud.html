@@ -93,9 +93,9 @@
     <td> <input type="text" name="descripcion" value="" required> </td>
       {% endif %}
       {% if busqueda %}
-      <td> <input type="number" name="alto1" value="{{cotizacion_encontrada.medida_alto}}" required> X <input type="number" name="ancho1" value="{{cotizacion_encontrada.medida_ancho}}" required> </td>
+      <td> <input type="number" step="0.01" pattern="\d+" name="alto1" value="{{cotizacion_encontrada.medida_alto}}" required> X <input type="number" step="0.01" pattern="\d+" name="ancho1" value="{{cotizacion_encontrada.medida_ancho}}" required> </td>
       {% else %}
-  <td> <input type="number" name="alto1" value="" required> X <input type="number" name="ancho1" value="" required> </td>
+  <td> <input type="number" step="0.01" pattern="\d+" name="alto1" value="" required> X <input type="number" step="0.01" pattern="\d+" name="ancho1" value="" required> </td>
     {% endif %}
 
         <td>
@@ -203,9 +203,9 @@
       <td> <input type="text" name="descripcion2" value="" id="descripcion1"> </td>
       {% endif %}
       {% if busqueda %}
-      <td> <input type="number" name="alto2" value="{{cotizacion_encontrada.medida_alto_2}}" id="alto1"> X <input type="number" value="{{cotizacion_encontrada.medida_ancho_2}}" name="ancho2" id="ancho1"> </td>
+      <td> <input type="number" name="alto2" step="0.01" pattern="\d+" value="{{cotizacion_encontrada.medida_alto_2}}" id="alto1"> X <input type="number" step="0.01" pattern="\d+" value="{{cotizacion_encontrada.medida_ancho_2}}" name="ancho2" id="ancho1"> </td>
       {% else %}
-    <td> <input type="number" name="alto2" value="0" id="alto1"> X <input type="number" value="0" name="ancho2" id="ancho1"> </td>
+    <td> <input type="number" name="alto2" step="0.01" pattern="\d+" value="0" id="alto1"> X <input type="number" step="0.01" pattern="\d+" value="0" name="ancho2" id="ancho1"> </td>
     {% endif %}
 
         <td>
@@ -312,9 +312,9 @@
       <td> <input type="text" name="descripcion3" value="" id="descripcion2"> </td>
       {% endif %}
       {% if busqueda %}
-      <td> <input type="number" name="alto3" value="{{cotizacion_encontrada.medida_alto_3}}" id="alto2"> X <input type="number" name="ancho3" value="{{cotizacion_encontrada.medida_ancho_3}}" id="ancho2"> </td>
+      <td> <input type="number" name="alto3" step="0.01" pattern="\d+" value="{{cotizacion_encontrada.medida_alto_3}}" id="alto2"> X <input type="number" step="0.01" pattern="\d+" name="ancho3" value="{{cotizacion_encontrada.medida_ancho_3}}" id="ancho2"> </td>
       {% else %}
-      <td> <input type="number" name="alto3" value="0" id="alto2"> X <input type="number" name="ancho3" value="0" id="ancho2"> </td>
+      <td> <input type="number" name="alto3" step="0.01" pattern="\d+" value="0" id="alto2"> X <input type="number" step="0.01" pattern="\d+" name="ancho3" value="0" id="ancho2"> </td>
     {% endif %}
 
         <td>
@@ -403,19 +403,45 @@
 
   <tr>
     <td>
+      {% if ver_cinta.4 == "roja" or ver_cinta.4 == "blanca" %}
       <div class="form-check form-check-inline">
   <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sin_cinta" value="sin_cinta" onclick="check()">
   <label class="form-check-label" for="inlineRadio1">sin cinta</label>
   </div>
   <div class="form-check form-check-inline">
-  <input required class="form-check-input" type="radio" name="inlineRadioOptions" id="con_cinta" value="con_cinta" onclick="check()">
-  <label class="form-check-label" for="inlineRadio2">con cinta</label>
-  </div></td>
-  <td> <select class="" id="tipo_cinta" name="tipo_cinta" disabled>
+  <input required class="form-check-input" type="radio" name="inlineRadioOptions" id="con_cinta" value="con_cinta"  onclick="check()" checked>
+  <label class="form-check-label" for="inlineRadio2"  >con cinta</label>
+  </div>
+  <td> <select class="" id="tipo_cinta" name="tipo_cinta">
+
+    <option value="{{ver_cinta.3}} {{ver_cinta.4}}">{{ver_cinta.3}} {{ver_cinta.4}}</option>
+
   <option value="cinta roja">Cinta roja</option>
   <option value="cinta blanca">Cinta blanca</option>
 
-  </select> <input required type="text" id="cantidad_cintas" name="cantidad_cintas" value="" placeholder="cantidad de cintas" disabled> <label for="">de</label> <input type="text" id="cm_cintas" name="cm_cintas" value="" placeholder="cm de c/cinta" disabled required> </td>
+
+</select> <input required type="number" step="1" pattern="\d+" id="cantidad_cintas" name="cantidad_cintas" value="{{ver_cinta.0}}" placeholder="cantidad de cintas"> <label for="">de</label> <input type="number" step="0.01" pattern="\d+" id="cm_cintas" name="cm_cintas" value="{{ver_cinta.6}}" placeholder="cm de c/cinta" required> </td>
+
+{% else %}
+      <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sin_cinta" value="sin_cinta" onclick="check()" checked>
+  <label class="form-check-label" for="inlineRadio1"  >sin cinta</label>
+  </div>
+  <div class="form-check form-check-inline">
+  <input required class="form-check-input" type="radio" name="inlineRadioOptions" id="con_cinta" value="con_cinta" onclick="check()">
+  <label class="form-check-label" for="inlineRadio2">con cinta</label>
+  </div>
+  <td> <select class="" id="tipo_cinta" name="tipo_cinta" disabled>
+
+
+
+  <option value="cinta roja">Cinta roja</option>
+  <option value="cinta blanca">Cinta blanca</option>
+
+
+</select> <input required type="number" step="1" pattern="\d+" id="cantidad_cintas" name="cantidad_cintas" value="" placeholder="cantidad de cintas" disabled> <label for="">de</label> <input type="number" step="0.01" pattern="\d+" id="cm_cintas" name="cm_cintas" value="" placeholder="cm de c/cinta" disabled required> </td>
+{% endif %}</td>
+
 
 
     <td id="adicional_row" style="display:none"> <input type="text" id="adicional" name="adicional" value="" placeholder="" ><input type="hidden" id="adicional_texto" name="adicional_texto" value=""> </td>
@@ -424,7 +450,7 @@
       <tr>
 
 
-        <td colspan="2" rowspan="2" style="color:darkblue">  {{ cotizacion.imagen }} </td>
+        <td colspan="2" rowspan="2" style="color:darkblue"><label for="">Adjuntar imagen: </label>  {{ cotizacion.imagen }} </td>
         </tr>
 
 

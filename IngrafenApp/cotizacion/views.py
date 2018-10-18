@@ -214,10 +214,28 @@ def solicitud_cot(request):
 
     if request.method == "POST" and request.POST.get("Buscar"):
         cot = request.POST.get("cot_reutilizar")
+        ver_cinta = ""
         try:
             cotizacion_encontrada = models.CotizacionesSolicitadas.objects.get(num_solicitud = cot)
+            if cotizacion_encontrada.detalles != "":
+                detalle = cotizacion_encontrada.detalles.split("\n")
+                ver_cinta = detalle[0].split()
+                detalle[0] = detalle[0].split()
+                print(ver_cinta)
+                if detalle[0][4] == "roja":
+                    texto = detalle[0][8:] + detalle[1:]
+                    print(texto)
+                    if len(texto) != 0:
+                        texto = " ".join(texto)
+                        cotizacion_encontrada.detalles = texto
+
+
+
+            if cotizacion_encontrada.numero_cotizacion != "":
+                cotizacion_encontrada.detalles += "\n" + "Referencia COT PAPYRUS #" + str(cotizacion_encontrada.numero_cotizacion)
             data = {"nombre_cliente":cotizacion_encontrada.nombre_cliente,"trabajo":cotizacion_encontrada.trabajo,"cantidad":cotizacion_encontrada.cantidad}
             cotizacion = Solicitud_cot(user=request.user,data=data)
+
         except:
             cotizacion_encontrada = "NO HAY"
             cotizacion = Solicitud_cot(request.user)
@@ -226,7 +244,7 @@ def solicitud_cot(request):
         materiales = models.Materiales.objects.all().order_by("material")
 
 
-        return render(request, "solicitud.html", {"cotizacion":cotizacion,"tipo_trabajo":tipo_trabajo,"materiales":materiales,"busqueda":busqueda,"cotizacion_encontrada":cotizacion_encontrada,"cotizaciones_existentes":cotizaciones_existentes} )
+        return render(request, "solicitud.html", {"ver_cinta":ver_cinta,"cotizacion":cotizacion,"tipo_trabajo":tipo_trabajo,"materiales":materiales,"busqueda":busqueda,"cotizacion_encontrada":cotizacion_encontrada,"cotizaciones_existentes":cotizaciones_existentes} )
 
     elif request.method == 'POST':
 
@@ -265,17 +283,18 @@ def solicitud_cot(request):
             stock.uv3 = request.POST.get("uv3")
             stock.laminado3 = request.POST.get("laminado3")
             stock.troquelado3 = request.POST.get("troquel3") + " " + request.POST.get("troquel_existente3")
+            stock.detalles = ""
+            if request.POST.get("cantidad_cintas") != None:
 
-            if request.POST.get("cantidad_cintas"):
-
-                stock.detalles = request.POST.get("cantidad_cintas") + " pedazos de " + request.POST.get("tipo_cinta")
-                stock.detalles += " de " + request.POST.get("cm_cintas") + "cms" + " " + request.POST.get("detalles")
+                stock.detalles = str(request.POST.get("cantidad_cintas")) + " pedazos de " + str(request.POST.get("tipo_cinta"))
+                stock.detalles += " de " + str(request.POST.get("cm_cintas")) + " cms" + "\n"
             if request.POST.get("adicional"):
 
-                stock.detalles = request.POST.get("adicional") + request.POST.get("adicional_texto")+ " " + request.POST.get("detalles")
+                stock.detalles += request.POST.get("adicional") + request.POST.get("adicional_texto")+ "\n"
 
-            else:
-                stock.detalles = request.POST.get("detalles")
+
+
+            stock.detalles += request.POST.get("detalles")
             if "imagen" in request.FILES:
                 stock.imagen = request.FILES["imagen"]
             stock.save()
@@ -308,19 +327,35 @@ def solicitudes_existentes(request):
         buscar=False
         numero_1 = request.POST.get("numero1")
         cotizacion = CotizacionesSolicitadas.objects.get(num_solicitud=numero_1)
-        
+
         cotizacion.fecha_completada = datetime.now()
         cotizacion.cotizador = str(request.user)
         cotizacion.numero_cotizacion = request.POST.get("cotizacion_papyrus")
 
 
         cotizacion.save()
+        return HttpResponseRedirect(reverse('solicitudes_existentes'))
+    elif request.method == "POST" and request.POST.get("asignar") == "ASIGNAR":
+        buscar = True
+        numero_1 = request.POST.get("numero1")
+        cotizacion_existentes = CotizacionesSolicitadas.objects.all().filter(num_solicitud=numero_1)
+        cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
+        cotizacion = CotizacionesSolicitadas.objects.get(num_solicitud=numero_1)
+        cotizacion.procesado_por = str(request.user)
+        cotizacion.save()
+
+        return render(request, "solicitudes_existentes.html",{"cotizacion_existentes":cotizacion_existentes, "buscar":buscar, "numero_a_ver":numero_1, "cotizaciones_existentes":cotizaciones_existentes})
+
+
+
+
+
 
 
 
 
         #return render(request,"solicitudes_existentes.html",{"cotizacion_completada":cotizacion_completada,"buscar":buscar,"numero_a_ver":numero_a_ver})
-        return HttpResponseRedirect(reverse('solicitudes_existentes'))
+
 
     elif request.method == "POST":
         buscar = True

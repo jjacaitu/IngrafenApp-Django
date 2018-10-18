@@ -26,7 +26,7 @@ SECRET_KEY = '&u#!+799h%ouz=un%zxy6ju3l5tk2&c0l*w3a5w*zp#0u4spys'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["www.ingrafen.com"]
+ALLOWED_HOSTS = ["www.ingrafen.com",'127.0.0.1']
 
 AUTH_USER_MODEL = 'cotizacion.Usuarios'
 

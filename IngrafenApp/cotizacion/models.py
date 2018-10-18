@@ -101,11 +101,14 @@ class CotizacionesSolicitadas(models.Model):
     cotizador = models.CharField(max_length=20, blank=True)
     numero_cotizacion = models.CharField(max_length=20, blank=True)
     imagen = models.ImageField(upload_to="uploads/", blank=True, null=True, default="none")
+    procesado_por = models.CharField(max_length=25,default=" ",blank=True)
 #AUMENTAR PARA SUBIR IMAGEN DE LO QUE SE DESEA COTIZAR
 
     def save(self, *args, **kwargs):
         if not self.num_solicitud:
-            self.imagen = self.compressImage(self.imagen)
+            if self.imagen != "none":
+                self.imagen = self.compressImage(self.imagen)
+
         super(CotizacionesSolicitadas, self).save(*args, **kwargs)
 
     def compressImage(self,imagen):

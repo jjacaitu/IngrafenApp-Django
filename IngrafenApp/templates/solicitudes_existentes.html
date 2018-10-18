@@ -16,7 +16,9 @@
   <th>CANTIDAD</th>
   <th>MEDIDA</th>
   <th>FECHA SOLICITADA</th>
-
+  {% if user.categoria == "COT" or user.categoria == "ADM" %}
+  <th>COTIZADOR ASIGNADO</th>
+  {% endif %}
   <th># SOLICITUD</th>
   </thead>
 {% for cotizaciones in cotizaciones_existentes %}
@@ -35,8 +37,10 @@
   <td>{{ cotizaciones.tipo_trabajo }} </td>
   <td>{{ cotizaciones.cantidad }} </td>
   <td>{{ cotizaciones.medida_alto }} X {{ cotizaciones.medida_ancho }} </td>
-  <td>{{ cotizaciones.fecha_solicitada }}</td>
-
+  <td><strong>{{ cotizaciones.fecha_solicitada }}</strong></td>
+  {% if user.categoria == "COT" or user.categoria == "ADM" %}
+  <td style="color:#114291"><strong>{{ cotizaciones.procesado_por }}</td>
+  {% endif %}
   <td>  <input type="submit" name="numero" class="btn btn-primary" value={{cotizaciones.num_solicitud}}></td>
   </tr>
   </form>
@@ -52,6 +56,7 @@
 
   {% for cotizacion in cotizacion_existentes %}
   <h2>Solicitud de cotizacion #{{cotizacion.num_solicitud}}</h2>
+  <h3 style="background-color:#ce5252;text-align:left;color:white">Cotizador asignado: {{cotizacion.procesado_por}}</h3>
   <table class="table table-bordered solido">
 
   <tr>
@@ -164,8 +169,8 @@
 
   <tr>
 
-<td colspan="2"> <label for="">Detalles adicionales:</label> <p>{{ cotizacion.detalles}}</p> </td>
-    <td colspan="2" rowspan="1"> <a href="{{cotizacion.imagen.url}}"> <img class="upload" src="{{ cotizacion.imagen.url }}" alt="Sin imagen adjunta"></a> </td>
+<td colspan="2"> <label for="">Detalles adicionales:</label> <p>{{ cotizacion.detalles|linebreaks}}</p> </td>
+    <td colspan="2" rowspan="1"> {% if cotizacion.imagen != "none" %}<a href="{{cotizacion.imagen.url}}"> <img class="upload" src="{{ cotizacion.imagen.url }}" alt="Sin imagen adjunta"></a>{% else %}Sin imagen adjunta{% endif %} </td>
 
 </tr>
 </table>
@@ -186,9 +191,22 @@
   <input type="text" name="cotizacion_papyrus" required>
 
   <input type="submit" name="boton_completar" value="COMPLETAR" class="btn btn-primary">
+
   {% endif %}
   <input type="submit" name="boton_regresar" value="REGRESAR" class="btn btn-primary">
-  </form>
+
+
+
+
+</form>
+<form enctype="multipart/form-data" method="POST">
+  {% csrf_token %}
+  {% for cotizacion in cotizacion_existentes %}
+<input type="hidden" name="numero1" value={{cotizacion.num_solicitud}}>
+{% endfor %}
+  <p style="text-align:center">
+  <input type="submit" name="asignar" value="ASIGNAR" class="btn btn-danger btn-lg"></p>
+</form>
 </div>
 
 </table>

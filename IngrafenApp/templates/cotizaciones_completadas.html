@@ -258,8 +258,8 @@
 
   <tr>
 
-<td colspan="2"><label for="">Detalles adicionales:</label> <p>{{ cotizacion.detalles}}</p> </td>
-    <td colspan="2" rowspan="1"> <a href="{{cotizacion.imagen.url}}"> <img class="upload" src="{{ cotizacion.imagen.url }}" alt="Sin imagen adjunta"> </a> </td>
+<td colspan="2"><label for="">Detalles adicionales:</label> <p>{{ cotizacion.detalles|linebreaks}}</p> </td>
+    <td colspan="2" rowspan="1"> {% if cotizacion.imagen != "none" %}<a href="{{cotizacion.imagen.url}}"> <img class="upload" src="{{ cotizacion.imagen.url }}" alt="Sin imagen adjunta"></a>{% else %}Sin imagen adjunta{% endif %} </td>
 
 </tr>
 </table>

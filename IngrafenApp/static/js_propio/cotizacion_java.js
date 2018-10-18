@@ -50,6 +50,8 @@ function agregar1() {
     document.getElementById("descripcion1").required = true;
     document.getElementById("alto1").required = true;
     document.getElementById("ancho1").required = true;
+    document.getElementById("alto1").value = "";
+    document.getElementById("ancho1").value = "";
     document.getElementById("uv1").required = true;
     document.getElementById("laminado1").required = true;
     document.getElementById("troquelado1").required = true;
@@ -67,6 +69,8 @@ function agregar2() {
     document.getElementById("descripcion2").required = true;
     document.getElementById("alto2").required = true;
     document.getElementById("ancho2").required = true;
+    document.getElementById("alto2").value = "";
+    document.getElementById("ancho2").value = "";
     document.getElementById("uv2").required = true;
     document.getElementById("laminado2").required = true;
     document.getElementById("troquelado2").required = true;
@@ -258,6 +262,9 @@ function check(){
     document.getElementById('cantidad_cintas').disabled = true;
     document.getElementById('cm_cintas').disabled = true;
     document.getElementById('tipo_cinta').disabled = true;
+    document.getElementById('cantidad_cintas').value = "";
+    document.getElementById('cm_cintas').value = "";
+    document.getElementById('tipo_cinta').value = "";
   }
 }
 
