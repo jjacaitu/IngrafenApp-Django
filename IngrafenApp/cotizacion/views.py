@@ -628,7 +628,7 @@ def cotizaciones_completadas(request):
 def creacion_material(request):
     cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
     creado = False
-    if request.method == "POST":
+    if request.method == "POST" and request.POST.get("crear") == "CREAR":
         material = Materiales(data=request.POST)
         if material.is_valid():
             creacion = material.save(commit=False)
@@ -644,7 +644,7 @@ def creacion_material(request):
 def creacion_trabajo(request):
     cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
     creado = False
-    if request.method == "POST":
+    if request.method == "POST" and request.POST.get("crear") == "CREAR":
         trabajo = TipoDeTrabajo(data=request.POST)
         if trabajo.is_valid():
             creacion = trabajo.save(commit=False)
@@ -660,7 +660,7 @@ def creacion_trabajo(request):
 def creacion_cliente(request):
     cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
     creado = False
-    if request.method == "POST":
+    if request.method == "POST" and request.POST.get("crear") == "CREAR":
         cliente = Clientes(data=request.POST)
         if cliente.is_valid():
             creacion= cliente.save(commit=False)
