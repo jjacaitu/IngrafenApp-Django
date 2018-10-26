@@ -3,16 +3,15 @@
 {% load static %}
 <div class="container">
   {% if solicitado %}
-  <h2>COTIZACION #{{numero_solicitud.num_solicitud }} SOLICITADA!</h2>
+  <h2>COTIZACIÓN #{{numero_solicitud.num_solicitud }} SOLICITADA!</h2>
   {% else %}
   {% if busqueda and cotizacion_encontrada == "NO HAY" %}
-  <h2>COTIZACION A REUTILIZAR NO ENCONTRADA</h2>
+  <h2>COTIZACIÓN A REUTILIZAR NO ENCONTRADA</h2>
   {% else %}
    {% if busqueda and cotizacion_encontrada.vendedor != user.username %}
-   <h2>COTIZACION A REUTILIZAR NO ENCONTRADA</h2>
+   <h2>COTIZACIÓN A REUTILIZAR NO ENCONTRADA</h2>
    {% else %}
-  <h2>SOLICITUD DE COTIZACION</h2>
-
+  <h2>SOLICITUD DE COTIZACIÓN</h2>
   <form enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     <div class="container">
@@ -77,7 +76,7 @@
         <td> <label for="">Troquelado</label> </td>
       </tr>
       <tr>
-        <td> <select  name="material1" required>
+        <td> <select  name="material1" onchange="chequeo_material(this)" required>
           {% if busqueda %}
           <option value="{{ cotizacion_encontrada.material}}">{{ cotizacion_encontrada.material }}</option>
           {% else %}
@@ -100,7 +99,7 @@
 
         <td>
           <label for="">Tiro:</label>
-          <select class="" name="impresiont1" onchange="pantonet1(this)" required>
+          <select class="" name="impresiont1" onchange="pantonet1(this)" id="impresiont" required>
             {% if busqueda %}
             <option value="{{ cotizacion_encontrada.impresion_tiro}}">{{ cotizacion_encontrada.impresion_tiro }}</option>
             {% else %}
@@ -115,7 +114,7 @@
           </select>
           <input type="text" name="num_pantonest1" id="num_pantonest1" value="" placeholder="# pantones" style="display:none">
           <label for="">Retiro:</label>
-          <select class="" name="impresionr1" onchange="pantoner1(this)" required>
+          <select class="" name="impresionr1"  onchange="pantoner1(this)"id="impresionr" required>
             {% if busqueda %}
             <option value="{{ cotizacion_encontrada.impresion_retiro}}">{{ cotizacion_encontrada.impresion_retiro }}</option>
             {% else %}
@@ -160,23 +159,84 @@
 
 
           </select></td>
-<td>
-          <select class="" name="troquel1" onchange="troquel_existente1_fun(this)" required>
-            {% if busqueda %}
+<td>{% if busqueda and cotizacion_encontrada.material|make_list|slice:'0:8'|join:'' != "Adhesivo"   %}
+          <select class="" name="troquel1" id="troquelado" onchange="troquel_existente1_fun(this)" required>
+
             <option value="{{ cotizacion_encontrada.troquelado}}">{{ cotizacion_encontrada.troquelado }}</option>
-            {% else %}
-          <option value=""></option>
-          {% endif %}
             <option value="Sin troquelar">Sin troquelar</option>
             <option value="Troquel nuevo">Troquel nuevo</option>
             <option value="Troquel existente">Troquel existente</option>
             <option value="Solo grafado">Solo grafado</option>
-            <option value="En planas para desprender">En planas para desprender</option>
+
 
           </select>
+          <select class="" name="troqueladh1" id="troqueladoadh" onchange="troquel_existente1_fun(this)" style="display:none">
+
+        <option value=""></option>
+
+
+          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+        </select>
+
+          {% elif busqueda and cotizacion_encontrada.material|make_list|slice:'0:8'|join:'' == "Adhesivo"   %}
+            <select class="" name="troqueladh1" id="troqueladoadh" onchange="troquel_existente1_fun(this)" required>
+              <option value="{{ cotizacion_encontrada.troquelado}}">{{ cotizacion_encontrada.troquelado }}</option>
+              <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+              <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+              <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+              <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+              <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+              <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+                </select>
+                <select class="" name="troquel1" id="troquelado" onchange="troquel_existente1_fun(this)" style="display:none">
+
+                  <option value=""></option>
+                  <option value="Sin troquelar">Sin troquelar</option>
+                  <option value="Troquel nuevo">Troquel nuevo</option>
+                  <option value="Troquel existente">Troquel existente</option>
+                  <option value="Solo grafado">Solo grafado</option>
+
+
+                </select>
+            {% else %}
+            <select class="" name="troquel1" id="troquelado" onchange="troquel_existente1_fun(this)" required>
+
+              <option value=""></option>
+              <option value="Sin troquelar">Sin troquelar</option>
+              <option value="Troquel nuevo">Troquel nuevo</option>
+              <option value="Troquel existente">Troquel existente</option>
+              <option value="Solo grafado">Solo grafado</option>
+
+
+            </select>
+
+
+          <select class="" name="troqueladh1" id="troqueladoadh" onchange="troquel_existente1_fun(this)" style="display:none">
+
+        <option value=""></option>
+
+
+          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+        </select>
+        {% endif %}
           <input type="text" name="troquel_existente1" id="troquel_existente1" value="" placeholder="referencia troquel" style="display:none">
 
          </td>
+
          <td id="boton_agregar"> <img  src="{% static "mas.png"%}" alt="+" onclick="agregar1()" style="width:30px;height:auto"> </td>
       </tr>
 
@@ -186,9 +246,9 @@
       <tr id="luno" style="display:none">
       {% endif %}
 
-        <td> <select class="" name="material2" id="material1">
+        <td> <select class="" name="material2" id="material1" onchange="chequeo_material2(this)">
           {% if busqueda %}
-          <option value="{{ cotizacion_encontrada.material2}}">{{ cotizacion_encontrada.material2 }}</option>
+          <option value="{{ cotizacion_encontrada.material2 }}">{{ cotizacion_encontrada.material2 }}</option>
           {% else %}
         <option value=""></option>
         {% endif %}
@@ -269,22 +329,86 @@
             <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
 
           </select></td>
-<td>
-          <select class="" name="troquel2" id="troquelado1" onchange="troquel_existente2_fun(this)">
-            {% if busqueda %}
-            <option value="{{ cotizacion_encontrada.troquelado2}}">{{ cotizacion_encontrada.troquelado2 }}</option>
-            {% else %}
-          <option value=""></option>
-          {% endif %}
-            <option value="Sin troquelar">Sin troquelar</option>
-            <option value="Troquel nuevo">Troquel nuevo</option>
-            <option value="Troquel existente">Troquel existente</option>
-            <option value="Solo grafado">Solo grafado</option>
-            <option value="En planas para desprender">En planas para desprender</option>
+          <td>
+            {% if busqueda and cotizacion_encontrada.material2 != "" %}
+            {% if busqueda and cotizacion_encontrada.material2|make_list|slice:'0:8'|join:'' != "Adhesivo"   %}
+                    <select class="" name="troquel2" id="troquelado1" onchange="troquel_existente2_fun(this)" required>
 
-          </select>
-<input type="text" name="troquel_existente2" id="troquel_existente2" value="" placeholder="referencia troquel" style="display:none">
-         </td>
+                      <option value="{{ cotizacion_encontrada.troquelado2}}">{{ cotizacion_encontrada.troquelado2 }}</option>
+                      <option value="Sin troquelar">Sin troquelar</option>
+                      <option value="Troquel nuevo">Troquel nuevo</option>
+                      <option value="Troquel existente">Troquel existente</option>
+                      <option value="Solo grafado">Solo grafado</option>
+
+
+                    </select>
+                    <select class="" name="troqueladh2" id="troqueladoadh1" onchange="troquel_existente2_fun(this)" style="display:none">
+
+                  <option value=""></option>
+
+
+                    <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                    <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                    <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                    <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                    <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                    <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                  </select>
+
+                    {% elif busqueda and cotizacion_encontrada.material2|make_list|slice:'0:8'|join:'' == "Adhesivo"   %}
+                      <select class="" name="troqueladh2" id="troqueladoadh1" onchange="troquel_existente2_fun(this)" required>
+                        <option value="{{ cotizacion_encontrada.troquelado2}}">{{ cotizacion_encontrada.troquelado2 }}</option>
+                        <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                        <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                        <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                        <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                        <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                        <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+                          </select>
+                          <select class="" name="troquel2" id="troquelado1" onchange="troquel_existente2_fun(this)" style="display:none">
+
+                            <option value=""></option>
+                            <option value="Sin troquelar">Sin troquelar</option>
+                            <option value="Troquel nuevo">Troquel nuevo</option>
+                            <option value="Troquel existente">Troquel existente</option>
+                            <option value="Solo grafado">Solo grafado</option>
+
+
+                          </select>
+                          {% endif %}
+                      {% else %}
+                      <select class="" name="troquel2" id="troquelado1" onchange="troquel_existente2_fun(this)">
+
+                        <option value=""></option>
+                        <option value="Sin troquelar">Sin troquelar</option>
+                        <option value="Troquel nuevo">Troquel nuevo</option>
+                        <option value="Troquel existente">Troquel existente</option>
+                        <option value="Solo grafado">Solo grafado</option>
+
+
+                      </select>
+
+
+                    <select class="" name="troqueladh2" id="troqueladoadh1" onchange="troquel_existente2_fun(this)" style="display:none">
+
+                  <option value=""></option>
+
+
+                    <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                    <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                    <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                    <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                    <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                    <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                  </select>
+                  {% endif %}
+                    <input type="text" name="troquel_existente2" id="troquel_existente2" value="" placeholder="referencia troquel" style="display:none">
+
+                   </td>
          <td> <img src="{% static "mas.png"%}" alt="+" onclick="agregar2()" style="width:30px;height:auto">
           <img id="boton_quitar" src="{% static "menos.png"%}" alt="-" onclick="quitar1()" style="width:30px;height:auto;margin-top:25px"> </td>
       </tr>
@@ -295,7 +419,7 @@
       <tr id="ldos" style="display:none">
       {% endif %}
 
-        <td> <select class="" name="material3" id="material2">
+        <td> <select class="" name="material3" id="material2" onchange="chequeo_material3(this)">
           {% if busqueda %}
           <option value="{{ cotizacion_encontrada.material3}}">{{ cotizacion_encontrada.material3 }}</option>
           {% else %}
@@ -307,7 +431,7 @@
 
         </select> </td>
         {% if busqueda %}
-        <td> <input type="text" name="descripcion3" value="{{cotizacion_encontrada.descripcion3}}" id="descripcion2"> </td>
+        <td> <input type="text" name="descripcion3" value="{{cotizacion_encontrada.descripcion_material3}}" id="descripcion2"> </td>
         {% else %}
       <td> <input type="text" name="descripcion3" value="" id="descripcion2"> </td>
       {% endif %}
@@ -335,7 +459,7 @@
           </select>
           <input type="text" name="num_pantonest3" id="num_pantonest3" value="" placeholder="# pantones" style="display:none">
           <label for="">Retiro:</label>
-          <select class="" name="impresionr3" onchange="pantoner3(this)" id="impresionr2">
+          <select class="" name="impresionr3"  onchange="pantoner3(this)" id="impresionr2">
             {% if busqueda %}
             <option value="{{ cotizacion_encontrada.impresion_retiro3}}">{{ cotizacion_encontrada.impresion_retiro3 }}</option>
             {% else %}
@@ -378,24 +502,437 @@
             <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
 
           </select></td>
-<td>
-          <select class="" name="troquel3" id="troquelado2" onchange="troquel_existente3_fun(this)">
-            {% if busqueda %}
-            <option value="{{ cotizacion_encontrada.troquelado3}}">{{ cotizacion_encontrada.troquelado3 }}</option>
-            {% else %}
-          <option value=""></option>
-          {% endif %}
-            <option value="Sin troquelar">Sin troquelar</option>
-            <option value="Troquel nuevo">Troquel nuevo</option>
-            <option value="Troquel existente">Troquel existente</option>
-            <option value="Solo grafado">Solo grafado</option>
-            <option value="En planas para desprender">En planas para desprender</option>
+          <td>
+            {% if busqueda and cotizacion_encontrada.material3 != "" %}
+            {% if busqueda and cotizacion_encontrada.material3|make_list|slice:'0:8'|join:'' != "Adhesivo"   %}
+                    <select class="" name="troquel3" id="troquelado2" onchange="troquel_existente3_fun(this)" required>
 
-          </select>
-<input type="text" name="troquel_existente3" id="troquel_existente3" value="" placeholder="referencia troquel" style="display:none">
-         </td>
-         <td> <img src="{% static "menos.png"%}" alt="-" onclick="quitar2()" style="width:30px;height:auto"> </td>
+                      <option value="{{ cotizacion_encontrada.troquelado3}}">{{ cotizacion_encontrada.troquelado3 }}</option>
+                      <option value="Sin troquelar">Sin troquelar</option>
+                      <option value="Troquel nuevo">Troquel nuevo</option>
+                      <option value="Troquel existente">Troquel existente</option>
+                      <option value="Solo grafado">Solo grafado</option>
+
+
+                    </select>
+                    <select class="" name="troqueladh3" id="troqueladoadh2" onchange="troquel_existente3_fun(this)" style="display:none">
+
+                  <option value=""></option>
+
+
+                    <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                    <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                    <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                    <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                    <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                    <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                  </select>
+
+                    {% elif busqueda and cotizacion_encontrada.material3|make_list|slice:'0:8'|join:'' == "Adhesivo"   %}
+                      <select class="" name="troqueladh3" id="troqueladoadh2" onchange="troquel_existente3_fun(this)" required>
+                        <option value="{{ cotizacion_encontrada.troquelado3}}">{{ cotizacion_encontrada.troquelado3 }}</option>
+                        <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                        <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                        <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                        <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                        <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                        <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+                          </select>
+                          <select class="" name="troquel1" id="troquelado" onchange="troquel_existente3_fun(this)" style="display:none">
+
+                            <option value=""></option>
+                            <option value="Sin troquelar">Sin troquelar</option>
+                            <option value="Troquel nuevo">Troquel nuevo</option>
+                            <option value="Troquel existente">Troquel existente</option>
+                            <option value="Solo grafado">Solo grafado</option>
+
+
+                          </select>
+                          {% endif %}
+                      {% else %}
+                      <select class="" name="troquel3" id="troquelado2" onchange="troquel_existente3_fun(this)">
+
+                        <option value=""></option>
+                        <option value="Sin troquelar">Sin troquelar</option>
+                        <option value="Troquel nuevo">Troquel nuevo</option>
+                        <option value="Troquel existente">Troquel existente</option>
+                        <option value="Solo grafado">Solo grafado</option>
+
+
+                      </select>
+
+
+                    <select class="" name="troqueladh3" id="troqueladoadh2" onchange="troquel_existente3_fun(this)" style="display:none">
+
+                  <option value=""></option>
+
+
+                    <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                    <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                    <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                    <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                    <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                    <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                  </select>
+                  {% endif %}
+                    <input type="text" name="troquel_existente3" id="troquel_existente3" value="" placeholder="referencia troquel" style="display:none">
+
+                   </td>
+                   <td> <img src="{% static "mas.png"%}" alt="+" onclick="agregar3()" style="width:30px;height:auto;margin-top:25px">
+                    <img id="boton_quitar2" src="{% static "menos.png"%}" alt="-" onclick="quitar2()" style="width:30px;height:auto;margin-top:25px"> </td>
       </tr>
+
+      {% if busqueda and cotizacion_encontrada.material4 %}
+            <tr id="ltres">
+            {% else %}
+            <tr id="ltres" style="display:none">
+            {% endif %}
+
+              <td> <select class="" name="material4" id="material3" onchange="chequeo_material4(this)">
+                {% if busqueda %}
+                <option value="{{ cotizacion_encontrada.material4}}">{{ cotizacion_encontrada.material4 }}</option>
+                {% else %}
+              <option value=""></option>
+              {% endif %}
+                {% for material in materiales %}
+                <option value="{{ material }}">{{ material }}</option>
+                {% endfor %}
+
+              </select> </td>
+              {% if busqueda %}
+              <td> <input type="text" name="descripcion4" value="{{cotizacion_encontrada.descripcion_material4}}" id="descripcion3"> </td>
+              {% else %}
+            <td> <input type="text" name="descripcion4" value="" id="descripcion3"> </td>
+            {% endif %}
+            {% if busqueda and cotizacion_encontrada.medida_alto_4 != "" %}
+            <td> <input type="number" name="alto4" step="0.01" pattern="\d+" value="{{cotizacion_encontrada.medida_alto_4}}" id="alto3"> X <input type="number" step="0.01" pattern="\d+" name="ancho4" value="{{cotizacion_encontrada.medida_ancho_4}}" id="ancho3"> </td>
+            {% else %}
+            <td> <input type="number" name="alto4" step="0.01" pattern="\d+" value="0" id="alto3"> X <input type="number" step="0.01" pattern="\d+" name="ancho4" value="0" id="ancho3"> </td>
+          {% endif %}
+
+              <td>
+
+                <label for="">Tiro:</label>
+                <select class="" name="impresiont4" onchange="pantonet4(this)" id="impresiont3">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.impresion_tiro4}}">{{ cotizacion_encontrada.impresion_tiro4 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin impresion">Sin impresion</option>
+                  <option value="F/C">F/C</option>
+
+                  <option value="Pantones">Pantones</option>
+                  <option value="F/C + Pantones">F/C + Pantones</option>
+
+                </select>
+                <input type="text" name="num_pantonest4" id="num_pantonest4" value="" placeholder="# pantones" style="display:none">
+                <label for="">Retiro:</label>
+                <select class="" name="impresionr4"  onchange="pantoner4(this)" id="impresionr3">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.impresion_retiro4}}">{{ cotizacion_encontrada.impresion_retiro4 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin impresion">Sin impresion</option>
+                  <option value="F/C">F/C</option>
+
+                  <option value="Pantones">Pantones</option>
+                  <option value="F/C + Pantones">F/C + Pantones</option>
+
+                </select>
+                <input type="text" name="num_pantonesr4" value="" id="num_pantonesr4" placeholder="# pantones" style="display:none">
+               </td>
+              <td>
+                <select class="" name="uv4" id="uv3">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.uv4}}">{{ cotizacion_encontrada.uv4 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin UV">Sin UV</option>
+                  <option value="Uv tiro">Uv Tiro</option>
+                  <option value="Uv tiro y retiro">Uv tiro y retiro</option>
+                  <option value="Sectorizado tiro">Sectorizado tiro</option>
+                  <option value="Sectorizado tiro y retiro">Sectorizado tiro y retiro</option>
+                </select>
+                </td>
+                <td>
+                <select class="" name="laminado4" id="laminado3">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.laminado4}}">{{ cotizacion_encontrada.laminado4 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin laminado">Sin laminado</option>
+                  <option value="Laminado mate tiro">Laminado mate tiro</option>
+                  <option value="Laminado mate tiro y retiro">Laminado mate tiro y retiro</option>
+                  <option value="Laminado brillo tiro">Laminado brillo tiro</option>
+                  <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
+
+                </select></td>
+
+                <td>
+                  {% if busqueda and cotizacion_encontrada.material4 != "" %}
+                  {% if busqueda and cotizacion_encontrada.material4|make_list|slice:'0:8'|join:'' != "Adhesivo"   %}
+                          <select class="" name="troquel4" id="troquelado3" onchange="troquel_existente4_fun(this)" required>
+
+                            <option value="{{ cotizacion_encontrada.troquelado4}}">{{ cotizacion_encontrada.troquelado4 }}</option>
+                            <option value="Sin troquelar">Sin troquelar</option>
+                            <option value="Troquel nuevo">Troquel nuevo</option>
+                            <option value="Troquel existente">Troquel existente</option>
+                            <option value="Solo grafado">Solo grafado</option>
+
+
+                          </select>
+                          <select class="" name="troqueladh4" id="troqueladoadh3" onchange="troquel_existente4_fun(this)" style="display:none">
+
+                        <option value=""></option>
+
+
+                          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                        </select>
+
+                          {% elif busqueda and cotizacion_encontrada.material4|make_list|slice:'0:8'|join:'' == "Adhesivo"   %}
+                            <select class="" name="troqueladh4" id="troqueladoadh3" onchange="troquel_existente4_fun(this)" required>
+                              <option value="{{ cotizacion_encontrada.troquelado4}}">{{ cotizacion_encontrada.troquelado4 }}</option>
+                              <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                              <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                              <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                              <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                              <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                              <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+                                </select>
+                                <select class="" name="troquel1" id="troquelado" onchange="troquel_existente4_fun(this)" style="display:none">
+
+                                  <option value=""></option>
+                                  <option value="Sin troquelar">Sin troquelar</option>
+                                  <option value="Troquel nuevo">Troquel nuevo</option>
+                                  <option value="Troquel existente">Troquel existente</option>
+                                  <option value="Solo grafado">Solo grafado</option>
+
+                                  {% endif %}
+                                </select>
+                            {% else %}
+                            <select class="" name="troquel4" id="troquelado3" onchange="troquel_existente4_fun(this)">
+
+                              <option value=""></option>
+                              <option value="Sin troquelar">Sin troquelar</option>
+                              <option value="Troquel nuevo">Troquel nuevo</option>
+                              <option value="Troquel existente">Troquel existente</option>
+                              <option value="Solo grafado">Solo grafado</option>
+
+
+                            </select>
+
+
+                          <select class="" name="troqueladh4" id="troqueladoadh3" onchange="troquel_existente4_fun(this)" style="display:none">
+
+                        <option value=""></option>
+
+
+                          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                        </select>
+                        {% endif %}
+                          <input type="text" name="troquel_existente4" id="troquel_existente4" value="" placeholder="referencia troquel" style="display:none">
+
+                         </td>
+                         <td> <img src="{% static "mas.png"%}" alt="+" onclick="agregar4()" style="width:30px;height:auto;margin-top:25px">
+               <img id="boton_quitar3" src="{% static "menos.png"%}" alt="-" onclick="quitar3()" style="width:30px;height:auto;margin-top:25px"> </td>
+            </tr>
+
+
+            {% if busqueda and cotizacion_encontrada.material5 %}
+            <tr id="lcuatro">
+            {% else %}
+            <tr id="lcuatro" style="display:none">
+            {% endif %}
+
+              <td> <select class="" name="material5" id="material4" onchange="chequeo_material5(this)">
+                {% if busqueda %}
+                <option value="{{ cotizacion_encontrada.material5}}">{{ cotizacion_encontrada.material5 }}</option>
+                {% else %}
+              <option value=""></option>
+              {% endif %}
+                {% for material in materiales %}
+                <option value="{{ material }}">{{ material }}</option>
+                {% endfor %}
+
+              </select> </td>
+              {% if busqueda %}
+              <td> <input type="text" name="descripcion5" value="{{cotizacion_encontrada.descripcion_material5}}" id="descripcion4"> </td>
+              {% else %}
+            <td> <input type="text" name="descripcion5" value="" id="descripcion4"> </td>
+            {% endif %}
+            {% if busqueda and cotizacion_encontrada.medida_alto_5 != ""%}
+            <td> <input type="number" name="alto5" step="0.01" pattern="\d+" value="{{cotizacion_encontrada.medida_alto_5}}" id="alto4"> X <input type="number" step="0.01" pattern="\d+" name="ancho5" value="{{cotizacion_encontrada.medida_ancho_5}}" id="ancho4"> </td>
+            {% else %}
+            <td> <input type="number" name="alto5" step="0.01" pattern="\d+" value="0" id="alto4"> X <input type="number" step="0.01" pattern="\d+" name="ancho5" value="0" id="ancho4"> </td>
+          {% endif %}
+
+              <td>
+
+                <label for="">Tiro:</label>
+                <select class="" name="impresiont5" onchange="pantonet5(this)" id="impresiont4">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.impresion_tiro5}}">{{ cotizacion_encontrada.impresion_tiro5 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin impresion">Sin impresion</option>
+                  <option value="F/C">F/C</option>
+
+                  <option value="Pantones">Pantones</option>
+                  <option value="F/C + Pantones">F/C + Pantones</option>
+
+                </select>
+                <input type="text" name="num_pantonest5" id="num_pantonest5" value="" placeholder="# pantones" style="display:none">
+                <label for="">Retiro:</label>
+                <select class="" name="impresionr5"  onchange="pantoner5(this)" id="impresionr4">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.impresion_retiro5}}">{{ cotizacion_encontrada.impresion_retiro5 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin impresion">Sin impresion</option>
+                  <option value="F/C">F/C</option>
+
+                  <option value="Pantones">Pantones</option>
+                  <option value="F/C + Pantones">F/C + Pantones</option>
+
+                </select>
+                <input type="text" name="num_pantonesr5" value="" id="num_pantonesr5" placeholder="# pantones" style="display:none">
+               </td>
+              <td>
+                <select class="" name="uv5" id="uv4">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.uv5}}">{{ cotizacion_encontrada.uv5 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin UV">Sin UV</option>
+                  <option value="Uv tiro">Uv Tiro</option>
+                  <option value="Uv tiro y retiro">Uv tiro y retiro</option>
+                  <option value="Sectorizado tiro">Sectorizado tiro</option>
+                  <option value="Sectorizado tiro y retiro">Sectorizado tiro y retiro</option>
+                </select>
+                </td>
+                <td>
+                <select class="" name="laminado5" id="laminado4">
+                  {% if busqueda %}
+                  <option value="{{ cotizacion_encontrada.laminado5}}">{{ cotizacion_encontrada.laminado5 }}</option>
+                  {% else %}
+                <option value=""></option>
+                {% endif %}
+                  <option value="Sin laminado">Sin laminado</option>
+                  <option value="Laminado mate tiro">Laminado mate tiro</option>
+                  <option value="Laminado mate tiro y retiro">Laminado mate tiro y retiro</option>
+                  <option value="Laminado brillo tiro">Laminado brillo tiro</option>
+                  <option value="Laminado brillo tiro y retiro">Laminado brillo tiro y retiro</option>
+
+                </select></td>
+
+                <td>
+                  {% if busqueda and cotizacion_encontrada.material5 != "" %}
+                  {% if busqueda and cotizacion_encontrada.material5|make_list|slice:'0:8'|join:'' != "Adhesivo"   %}
+                          <select class="" name="troquel5" id="troquelado4" onchange="troquel_existente5_fun(this)" required>
+
+                            <option value="{{ cotizacion_encontrada.troquelado5}}">{{ cotizacion_encontrada.troquelado5 }}</option>
+                            <option value="Sin troquelar">Sin troquelar</option>
+                            <option value="Troquel nuevo">Troquel nuevo</option>
+                            <option value="Troquel existente">Troquel existente</option>
+                            <option value="Solo grafado">Solo grafado</option>
+
+
+                          </select>
+                          <select class="" name="troqueladh5" id="troqueladoadh4" onchange="troquel_existente5_fun(this)" style="display:none">
+
+                        <option value=""></option>
+
+
+                          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                        </select>
+
+                          {% elif busqueda and cotizacion_encontrada.material5|make_list|slice:'0:8'|join:'' == "Adhesivo"   %}
+                            <select class="" name="troqueladh5" id="troqueladoadh4" onchange="troquel_existente5_fun(this)" required>
+                              <option value="{{ cotizacion_encontrada.troquelado5}}">{{ cotizacion_encontrada.troquelado5 }}</option>
+                              <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                              <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                              <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                              <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                              <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                              <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+                                </select>
+                                <select class="" name="troquel1" id="troquelado" onchange="troquel_existente5_fun(this)" style="display:none">
+
+                                  <option value=""></option>
+                                  <option value="Sin troquelar">Sin troquelar</option>
+                                  <option value="Troquel nuevo">Troquel nuevo</option>
+                                  <option value="Troquel existente">Troquel existente</option>
+                                  <option value="Solo grafado">Solo grafado</option>
+
+
+                                </select>
+                                {% endif %}
+                            {% else %}
+                            <select class="" name="troquel5" id="troquelado4" onchange="troquel_existente5_fun(this)">
+
+                              <option value=""></option>
+                              <option value="Sin troquelar">Sin troquelar</option>
+                              <option value="Troquel nuevo">Troquel nuevo</option>
+                              <option value="Troquel existente">Troquel existente</option>
+                              <option value="Solo grafado">Solo grafado</option>
+
+
+                            </select>
+
+
+                          <select class="" name="troqueladh5" id="troqueladoadh4" onchange="troquel_existente5_fun(this)" style="display:none">
+
+                        <option value=""></option>
+
+
+                          <option value="Individuales con medio corte adelante">Individuales con medio corte adelante</option>
+                          <option value="En planas para desprender corte recto">En planas para desprender corte recto</option>
+                          <option value="En planas para desprender troquel nuevo">En planas para desprender troquel nuevo</option>
+                          <option value="En planas para desprender troquel existente">En planas para desprender troquel existente</option>
+                          <option value="Individuales con troquel nuevo">Individuales con troquel nuevo</option>
+                          <option value="Individuales con troquel existente">Individuales con troquel existente</option>
+
+
+                        </select>
+                        {% endif %}
+                          <input type="text" name="troquel_existente5" id="troquel_existente5" value="" placeholder="referencia troquel" style="display:none">
+
+                         </td>
+               <td> <img src="{% static "menos.png"%}" alt="-" onclick="quitar4()" style="width:30px;height:auto;margin-top:25px"> </td>
+            </tr>
+
 
 </table>
 
@@ -424,7 +961,7 @@
 
 {% else %}
       <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sin_cinta" value="sin_cinta" onclick="check()" checked>
+  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sin_cinta" value="sin_cinta" onclick="check()" {% if busqueda %} checked {% endif %}>
   <label class="form-check-label" for="inlineRadio1"  >sin cinta</label>
   </div>
   <div class="form-check form-check-inline">
@@ -470,12 +1007,12 @@
     <div class="container">
 
 
-    <input type="submit" name="" class="btn btn-primary" value="SOLICITAR">
-
+    <input type="submit" name="Solicitar" class="btn btn-primary" value="SOLICITAR">
     </div>
   </form>
 {% endif %}
 {% endif %}
 {% endif %}
 </div>
+
 {% endblock %}

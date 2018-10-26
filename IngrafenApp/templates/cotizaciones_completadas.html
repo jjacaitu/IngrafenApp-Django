@@ -115,8 +115,8 @@
 
     <span class="step-links">
         {% if cotizaciones_completadas.has_previous %}
-            <a href="?page=1"> <button type="button" class="btn btn-primary">first</button></a>
-            <a href="?page={{ cotizaciones_completadas.previous_page_number }}"><button type="button" class="btn btn-primary">previous</button></a>
+            <a href="?page=1"> <button type="button" class="btn btn-primary">primera</button></a>
+            <a href="?page={{ cotizaciones_completadas.previous_page_number }}"><button type="button" class="btn btn-primary">anterior</button></a>
         {% endif %}
 
         <span class="current" style="font-weight:bold">
@@ -124,8 +124,8 @@
         </span>
 
         {% if cotizaciones_completadas.has_next %}
-            <a href="?page={{ cotizaciones_completadas.next_page_number }}"><button type="button" class="btn btn-primary">next</button></a>
-            <a href="?page={{ cotizaciones_completadas.paginator.num_pages }}"><button type="button" class="btn btn-primary">last</button></a>
+            <a href="?page={{ cotizaciones_completadas.next_page_number }}"><button type="button" class="btn btn-primary">siguiente</button></a>
+            <a href="?page={{ cotizaciones_completadas.paginator.num_pages }}"><button type="button" class="btn btn-primary">ultima</button></a>
         {% endif %}
 
     </span>
@@ -247,6 +247,54 @@
     {{ cotizacion.laminado3 }}</td>
 <td>
   {{ cotizacion.troquelado3 }}
+   </td>
+
+</tr>
+{% endif %}
+
+{% if cotizacion.material4 != "" %}
+<tr>
+  <td> {{ cotizacion.material4 }} </td>
+  <td> {{ cotizacion.descripcion_material4 }} </td>
+  <td>{{ cotizacion.medida_alto_4 }} X {{ cotizacion.medida_ancho_4 }} </td>
+  <td>
+    <label for="">Tiro:</label>
+    {{ cotizacion.impresion_tiro4 }}
+
+    <label for="">Retiro:</label>
+    {{ cotizacion.impresion_retiro4 }}
+   </td>
+  <td>
+    {{ cotizacion.uv4 }}
+    </td>
+    <td>
+    {{ cotizacion.laminado4 }}</td>
+<td>
+  {{ cotizacion.troquelado4 }}
+   </td>
+
+</tr>
+{% endif %}
+
+{% if cotizacion.material5 != "" %}
+<tr>
+  <td> {{ cotizacion.material5 }} </td>
+  <td> {{ cotizacion.descripcion_material5 }} </td>
+  <td>{{ cotizacion.medida_alto_5 }} X {{ cotizacion.medida_ancho_5 }} </td>
+  <td>
+    <label for="">Tiro:</label>
+    {{ cotizacion.impresion_tiro5 }}
+
+    <label for="">Retiro:</label>
+    {{ cotizacion.impresion_retiro5 }}
+   </td>
+  <td>
+    {{ cotizacion.uv5 }}
+    </td>
+    <td>
+    {{ cotizacion.laminado5 }}</td>
+<td>
+  {{ cotizacion.troquelado5 }}
    </td>
 
 </tr>

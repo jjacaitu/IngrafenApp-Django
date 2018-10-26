@@ -217,26 +217,33 @@ def solicitud_cot(request):
         ver_cinta = ""
         try:
             cotizacion_encontrada = models.CotizacionesSolicitadas.objects.get(num_solicitud = cot)
+            print("AQUI",cotizacion_encontrada)
             if cotizacion_encontrada.detalles != "":
                 detalle = cotizacion_encontrada.detalles.split("\n")
                 ver_cinta = detalle[0].split()
+
                 detalle[0] = detalle[0].split()
-                print(ver_cinta)
-                if detalle[0][4] == "roja":
-                    texto = detalle[0][8:] + detalle[1:]
-                    print(texto)
-                    if len(texto) != 0:
-                        texto = " ".join(texto)
-                        cotizacion_encontrada.detalles = texto
+
+                try:
+                    if detalle[0][4] == "roja" or detalle[0][4] == "blanca":
+                        texto = detalle[0][8:] + detalle[1:]
+                        print(texto)
+                        if len(texto) != 0:
+                            texto = " ".join(texto)
+                            cotizacion_encontrada.detalles = texto
+                except:
+
+                    pass
 
 
 
             if cotizacion_encontrada.numero_cotizacion != "":
+
                 cotizacion_encontrada.detalles += "\n" + "Referencia COT PAPYRUS #" + str(cotizacion_encontrada.numero_cotizacion)
             data = {"nombre_cliente":cotizacion_encontrada.nombre_cliente,"trabajo":cotizacion_encontrada.trabajo,"cantidad":cotizacion_encontrada.cantidad}
             cotizacion = Solicitud_cot(user=request.user,data=data)
 
-        except:
+        except CotizacionesSolicitadas.DoesNotExist:
             cotizacion_encontrada = "NO HAY"
             cotizacion = Solicitud_cot(request.user)
         busqueda = True
@@ -262,27 +269,63 @@ def solicitud_cot(request):
 
             stock.uv = request.POST.get("uv1")
             stock.laminado = request.POST.get("laminado1")
-            stock.troquelado = request.POST.get("troquel1") + " " + request.POST.get("troquel_existente1")
+            if request.POST.get("troquel1"):
+                stock.troquelado = str(request.POST.get("troquel1")) + " " +  str(request.POST.get("troquel_existente1"))
+            else:
+                stock.troquelado = str(request.POST.get("troqueladh1")) + " " + str(request.POST.get("troquel_existente1"))
 
             stock.material2 = request.POST.get("material2")
             stock.descripcion_material2 = request.POST.get("descripcion2")
             stock.medida_alto_2 = request.POST.get("alto2")
             stock.medida_ancho_2 = request.POST.get("ancho2")
-            stock.impresion_tiro2 = request.POST.get("num_pantonest2") + " " + request.POST.get("impresiont2")
-            stock.impresion_retiro2 = request.POST.get("num_pantonesr2") + " " + request.POST.get("impresionr2")
+            stock.impresion_tiro2 = str(request.POST.get("num_pantonest2")) + " " + str(request.POST.get("impresiont2"))
+            stock.impresion_retiro2 = str(request.POST.get("num_pantonesr2")) + " " + str(request.POST.get("impresionr2"))
             stock.uv2 = request.POST.get("uv2")
             stock.laminado2 = request.POST.get("laminado2")
-            stock.troquelado2 = request.POST.get("troquel2") + " " + request.POST.get("troquel_existente2")
-
+            if request.POST.get("troquel2"):
+                stock.troquelado2 = str(request.POST.get("troquel2")) + " " +  str(request.POST.get("troquel_existente2"))
+            else:
+                stock.troquelado2 = str(request.POST.get("troqueladh2")) + " " + str(request.POST.get("troquel_existente2"))
             stock.material3 = request.POST.get("material3")
             stock.descripcion_material3 = request.POST.get("descripcion3")
             stock.medida_alto_3 = request.POST.get("alto3")
             stock.medida_ancho_3 = request.POST.get("ancho3")
-            stock.impresion_tiro3 = request.POST.get("num_pantonest3") + " " + request.POST.get("impresiont3")
-            stock.impresion_retiro3 = request.POST.get("num_pantonesr3") + " " + request.POST.get("impresionr3")
+            stock.impresion_tiro3 = str(request.POST.get("num_pantonest3")) + " " + str(request.POST.get("impresiont3"))
+            stock.impresion_retiro3 = str(request.POST.get("num_pantonesr3")) + " " + str(request.POST.get("impresionr3"))
             stock.uv3 = request.POST.get("uv3")
             stock.laminado3 = request.POST.get("laminado3")
-            stock.troquelado3 = request.POST.get("troquel3") + " " + request.POST.get("troquel_existente3")
+            if request.POST.get("troquel3"):
+                stock.troquelado3 = str(request.POST.get("troquel3")) + " " +  str(request.POST.get("troquel_existente3"))
+            else:
+                stock.troquelado3 = str(request.POST.get("troqueladh3")) + " " + str(request.POST.get("troquel_existente3"))
+
+            stock.material4 = request.POST.get("material4")
+            stock.descripcion_material4 = request.POST.get("descripcion4")
+            stock.medida_alto_4 = request.POST.get("alto4")
+            stock.medida_ancho_4 = request.POST.get("ancho4")
+            stock.impresion_tiro4 = str(request.POST.get("num_pantonest4")) + " " + str(request.POST.get("impresiont4"))
+            stock.impresion_retiro4 = str(request.POST.get("num_pantonesr4")) + " " + str(request.POST.get("impresionr4"))
+            stock.uv4 = request.POST.get("uv4")
+            stock.laminado4 = request.POST.get("laminado4")
+            if request.POST.get("troquel4"):
+                stock.troquelado4 = str(request.POST.get("troquel4")) + " " +  str(request.POST.get("troquel_existente4"))
+            else:
+                stock.troquelado4 = str(request.POST.get("troqueladh4")) + " " + str(request.POST.get("troquel_existente4"))
+
+            stock.material5 = request.POST.get("material5")
+            stock.descripcion_material5 = request.POST.get("descripcion5")
+            stock.medida_alto_5 = request.POST.get("alto5")
+            stock.medida_ancho_5 = request.POST.get("ancho5")
+            stock.impresion_tiro5 = str(request.POST.get("num_pantonest5")) + " " + str(request.POST.get("impresiont5"))
+            stock.impresion_retiro5 = str(request.POST.get("num_pantonesr5")) + " " + str(request.POST.get("impresionr5"))
+            stock.uv5 = request.POST.get("uv5")
+            stock.laminado5 = request.POST.get("laminado5")
+            if request.POST.get("troquel5"):
+                stock.troquelado5 = str(request.POST.get("troquel5")) + " " +  str(request.POST.get("troquel_existente5"))
+            else:
+                stock.troquelado5 = str(request.POST.get("troqueladh5")) + " " + str(request.POST.get("troquel_existente5"))
+
+
             stock.detalles = ""
             if request.POST.get("cantidad_cintas") != None:
 
@@ -315,12 +358,18 @@ def solicitud_cot(request):
 def solicitudes_existentes(request):
     buscar = False
     if request.method == "GET":
-        cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
+        if request.user.categoria == "VEN":
+            cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="").filter(vendedor=request.user)
+        else:
+            cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
         print(cotizaciones_existentes)
         return render(request, "solicitudes_existentes.html",{"cotizaciones_existentes":cotizaciones_existentes,"buscar":buscar})
     elif request.method == "POST" and request.POST.get("boton_regresar") == "REGRESAR":
         buscar=False
-        cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
+        if request.user.categoria == "VEN":
+            cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="").filter(vendedor=request.user)
+        else:
+            cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
         return render(request, "solicitudes_existentes.html",{"cotizaciones_existentes":cotizaciones_existentes,"buscar":buscar})
 
     elif request.method == "POST" and request.POST.get("boton_completar") == "COMPLETAR":
@@ -372,59 +421,114 @@ def cotizaciones_completadas(request):
     trabajos_creados = models.TipoDeTrabajo.objects.all().order_by("trabajo")
     cotizadores = models.Usuarios.objects.all().filter(categoria="COT").order_by("username")
     vendedores = models.Usuarios.objects.all().filter(categoria="VEN").order_by("username")
-    if request.method == "GET":
+    if request.method == "GET" and request.user.categoria == "VEN":
+        cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="").filter(vendedor=request.user)
+        paginator = Paginator(cotizaciones,10)
+        page = request.GET.get('page')
+        cotizaciones_completadas = paginator.get_page(page)
+        return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"ver":ver,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"cotizadores":cotizadores,"vendedores":vendedores, "cotizaciones_existentes":cotizaciones_existentes})
+    elif request.method == "GET":
         cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="")
         paginator = Paginator(cotizaciones,10)
         page = request.GET.get('page')
         cotizaciones_completadas = paginator.get_page(page)
+        print("prueba")
 
         return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"ver":ver,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"cotizadores":cotizadores,"vendedores":vendedores, "cotizaciones_existentes":cotizaciones_existentes})
     if request.method == "POST" and request.POST.get("buscar") == "BUSCAR":
-        try:
-            ver = False
-            desde = request.POST.get("desde")
-            hasta = request.POST.get("hasta")
-            print(desde)
-            print(hasta)
+        if request.user.categoria == "VEN":
+            try:
+                ver = False
+                desde = request.POST.get("desde")
+                hasta = request.POST.get("hasta")
+                print("DESDE",desde)
+                print("HASTA",hasta)
 
-            print("SIRVE " + request.POST.get("parametro"))
-            if request.POST.get("seleccion") == "Cliente":
-                print(request.POST.get("cl"))
-                b = models.Clientes.objects.get(nombre=request.POST.get("cl"))
-                cotizaciones = b.client.all().filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="")
+                print("SIRVE " + request.POST.get("parametro"))
+                if request.POST.get("seleccion") == "Cliente":
+                    print(request.POST.get("cl"))
+                    b = models.Clientes.objects.get(nombre=request.POST.get("cl"))
+                    cotizaciones = b.client.all().filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="").filter(vendedor=request.user)
 
 
-            elif request.POST.get("seleccion") == "Todo":
-                print("TODO")
+                elif request.POST.get("seleccion") == "Todo":
+                    print("TODO")
 
-                cotizaciones = CotizacionesSolicitadas.objects.filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="")
+                    cotizaciones = CotizacionesSolicitadas.objects.filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="").filter(vendedor=request.user)
 
-            elif request.POST.get("seleccion") == "Trabajo":
+                elif request.POST.get("seleccion") == "Trabajo":
 
-                cotizaciones = CotizacionesSolicitadas.objects.all().filter(tipo_trabajo=request.POST.get("tr")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="")
-            elif request.POST.get("seleccion") == "Vendedor":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(tipo_trabajo=request.POST.get("tr")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="").filter(vendedor=request.user)
+                elif request.POST.get("seleccion") == "Vendedor":
 
-                cotizaciones = CotizacionesSolicitadas.objects.all().filter(vendedor=request.POST.get("ven")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="")
-            elif request.POST.get("seleccion") == "Cotizador":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(vendedor=request.POST.get("ven")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="")
+                elif request.POST.get("seleccion") == "Cotizador":
 
-                cotizaciones = CotizacionesSolicitadas.objects.all().filter(cotizador=request.POST.get("cot")).filter(fecha_completada__range=[desde,hasta])
-            elif request.POST.get("seleccion") == "Solicitud":
-                cotizaciones = CotizacionesSolicitadas.objects.all().filter(num_solicitud=request.POST.get("parametro"))
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(cotizador=request.POST.get("cot")).filter(fecha_completada__range=[desde,hasta])
+                elif request.POST.get("seleccion") == "Solicitud":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(num_solicitud=request.POST.get("parametro")).filter(vendedor=request.user)
 
-            elif request.POST.get("seleccion") == "Promocion":
-                cotizaciones = CotizacionesSolicitadas.objects.all().filter(trabajo=request.POST.get("parametro")).filter(fecha_completada__range=[desde,hasta])
-            print("si")
-            clientes_creados = models.Clientes.objects.all().order_by("nombre")
-            trabajos_creados = models.TipoDeTrabajo.objects.all().order_by("trabajo")
-            cotizadores = models.Usuarios.objects.all().filter(categoria="COT").order_by("username")
-            vendedores = models.Usuarios.objects.all().filter(categoria="VEN").order_by("username")
-            paginator = Paginator(cotizaciones,10)
-            page = request.GET.get('page')
-            cotizaciones_completadas = paginator.get_page(page)
-            return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores,"cotizaciones_existentes":cotizaciones_existentes})
-        except:
+                elif request.POST.get("seleccion") == "Promocion":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(trabajo=request.POST.get("parametro")).filter(fecha_completada__range=[desde,hasta]).filter(vendedor=request.user)
+                print("si")
+                clientes_creados = models.Clientes.objects.all().order_by("nombre")
+                trabajos_creados = models.TipoDeTrabajo.objects.all().order_by("trabajo")
+                cotizadores = models.Usuarios.objects.all().filter(categoria="COT").order_by("username")
+                vendedores = models.Usuarios.objects.all().filter(categoria="VEN").order_by("username")
+                paginator = Paginator(cotizaciones,10)
+                page = request.GET.get('page')
+                cotizaciones_completadas = paginator.get_page(page)
+                return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores,"cotizaciones_existentes":cotizaciones_existentes})
+            except:
 
-            return render(request, "cotizaciones_completadas.html", {"cotizaciones_existentes":cotizaciones_existentes,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores})
+                return render(request, "cotizaciones_completadas.html", {"cotizaciones_existentes":cotizaciones_existentes,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores})
+
+        else:
+            try:
+                ver = False
+                desde = request.POST.get("desde")
+                hasta = request.POST.get("hasta")
+                print("DESDE",desde)
+                print("HASTA",hasta)
+
+                print("SIRVE " + request.POST.get("parametro"))
+                if request.POST.get("seleccion") == "Cliente":
+                    print(request.POST.get("cl"))
+                    b = models.Clientes.objects.get(nombre=request.POST.get("cl"))
+                    cotizaciones = b.client.all().filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="")
+
+
+                elif request.POST.get("seleccion") == "Todo":
+                    print("TODO")
+
+                    cotizaciones = CotizacionesSolicitadas.objects.filter(fecha_completada__range=[str(desde),str(hasta)]).exclude(cotizador__exact="")
+
+                elif request.POST.get("seleccion") == "Trabajo":
+
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(tipo_trabajo=request.POST.get("tr")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="")
+                elif request.POST.get("seleccion") == "Vendedor":
+
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(vendedor=request.POST.get("ven")).filter(fecha_completada__range=[desde,hasta]).exclude(cotizador__exact="")
+                elif request.POST.get("seleccion") == "Cotizador":
+
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(cotizador=request.POST.get("cot")).filter(fecha_completada__range=[desde,hasta])
+                elif request.POST.get("seleccion") == "Solicitud":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(num_solicitud=request.POST.get("parametro"))
+
+                elif request.POST.get("seleccion") == "Promocion":
+                    cotizaciones = CotizacionesSolicitadas.objects.all().filter(trabajo=request.POST.get("parametro")).filter(fecha_completada__range=[desde,hasta])
+                print("si")
+                clientes_creados = models.Clientes.objects.all().order_by("nombre")
+                trabajos_creados = models.TipoDeTrabajo.objects.all().order_by("trabajo")
+                cotizadores = models.Usuarios.objects.all().filter(categoria="COT").order_by("username")
+                vendedores = models.Usuarios.objects.all().filter(categoria="VEN").order_by("username")
+                paginator = Paginator(cotizaciones,10)
+                page = request.GET.get('page')
+                cotizaciones_completadas = paginator.get_page(page)
+                return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores,"cotizaciones_existentes":cotizaciones_existentes})
+            except:
+
+                return render(request, "cotizaciones_completadas.html", {"cotizaciones_existentes":cotizaciones_existentes,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"ver":ver,"cotizadores":cotizadores,"vendedores":vendedores})
     if request.method == "POST" and request.POST.get("ver") == "ver cotizacion":
         ver = True
 
@@ -681,6 +785,11 @@ def reportes(request):
                         dias = 0
                         solicitada =items.fecha_solicitada
                         completada = items.fecha_completada
+                        print("AQUI",solicitada)
+
+                        print("AQUI",completada)
+                        print("ACA",items.num_solicitud)
+
                         if items.fecha_solicitada.time()>datetime(2009, 12, 1, 17, 30).time():
                             solicitada = solicitada + timedelta(days=1)
                             solicitada = solicitada.replace(hour=8,minute=0)
@@ -688,6 +797,20 @@ def reportes(request):
                             completada = completada + timedelta(days=1)
                             completada = completada.replace(hour=8,minute=0)
                             print("AQUI",solicitada)
+                            print("ACA",items.num_solicitud)
+                        if solicitada.weekday() == 5:
+                            solicitada = solicitada + timedelta(days=2)
+                            solicitada = solicitada.replace(hour=8,minute=0)
+                        elif solicitada.weekday() == 6:
+                            solicitada = solicitada + timedelta(days=1)
+                            solicitada = solicitada.replace(hour=8,minute=0)
+
+                        if completada.weekday() == 5:
+                            completada = completada + timedelta(days=2)
+                            completada = completada.replace(hour=8,minute=0)
+                        elif completada.weekday() == 6:
+                            completada = completada + timedelta(days=1)
+                            completada = completada.replace(hour=8,minute=0)
                         if solicitada.weekday()>completada.weekday():
                             completada = completada - timedelta(days=2)
                         segundos_totales = (completada-solicitada).total_seconds()

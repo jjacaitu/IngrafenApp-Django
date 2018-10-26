@@ -13,31 +13,57 @@ function tipo_trabajo(item) {
 
 
 function troquel_existente1_fun(item){
-  if(item.value == "Troquel existente"){
+  if(item.value == "Troquel existente" || item.value.slice(-9) == "existente"){
     document.getElementById("troquel_existente1").style.display = "initial";
 
   }else{
 document.getElementById("troquel_existente1").style.display = "none";
+document.getElementById("troquel_existente1").value = "";
 
   }
 }
 
 function troquel_existente2_fun(item){
-  if(item.value == "Troquel existente"){
+  if(item.value == "Troquel existente" || item.value.slice(-9) == "existente"){
     document.getElementById("troquel_existente2").style.display = "initial";
 
   }else{
 document.getElementById("troquel_existente2").style.display = "none";
+document.getElementById("troquel_existente2").value = "";
+
 
   }
 }
 
 function troquel_existente3_fun(item){
-  if(item.value == "Troquel existente"){
+  if(item.value == "Troquel existente" || item.value.slice(-9) == "existente"){
     document.getElementById("troquel_existente3").style.display = "initial";
 
   }else{
 document.getElementById("troquel_existente3").style.display = "none";
+document.getElementById("troquel_existente3").value = "";
+
+  }
+}
+
+function troquel_existente4_fun(item){
+  if(item.value == "Troquel existente" || item.value.slice(-9) == "existente"){
+    document.getElementById("troquel_existente4").style.display = "initial";
+
+  }else{
+document.getElementById("troquel_existente4").style.display = "none";
+document.getElementById("troquel_existente4").value = "";
+
+  }
+}
+
+function troquel_existente5_fun(item){
+  if(item.value == "Troquel existente" || item.value.slice(-9) == "existente"){
+    document.getElementById("troquel_existente5").style.display = "initial";
+
+  }else{
+document.getElementById("troquel_existente5").style.display = "none";
+document.getElementById("troquel_existente5").value = "";
 
   }
 }
@@ -57,6 +83,8 @@ function agregar1() {
     document.getElementById("troquelado1").required = true;
     document.getElementById("impresiont1").required = true;
     document.getElementById("impresionr1").required = true;
+    document.getElementById("troquelado1").value = "";
+    document.getElementById("troqueladh1").value = "";
   }
 }
 
@@ -76,9 +104,60 @@ function agregar2() {
     document.getElementById("troquelado2").required = true;
     document.getElementById("impresiont2").required = true;
     document.getElementById("impresionr2").required = true;
+    document.getElementById("troquelado2").value = "";
+    document.getElementById("troqueladh2").value = "";
+
   }
 }
 
+function agregar3() {
+
+  if (document.getElementById('ltres').style.display = "none"){
+    document.getElementById('ltres').style.display = "table-row";
+    document.getElementById('boton_quitar2').style.display = "none";
+    document.getElementById("material3").required = true;
+    document.getElementById("descripcion3").required = true;
+    document.getElementById("alto3").required = true;
+    document.getElementById("ancho3").required = true;
+    document.getElementById("alto3").value = 0;
+    document.getElementById("ancho3").value = 0;
+    document.getElementById("uv3").required = true;
+    document.getElementById("laminado3").required = true;
+    document.getElementById("troquelado3").required = true;
+    document.getElementById("impresiont3").required = true;
+    document.getElementById("impresionr3").required = true;
+    document.getElementById("troquelado3").value = "";
+    document.getElementById("troqueladh3").value = "";
+
+
+
+
+  }
+}
+
+function agregar4() {
+
+  if (document.getElementById('lcuatro').style.display = "none"){
+    document.getElementById('lcuatro').style.display = "table-row";
+    document.getElementById('boton_quitar3').style.display = "none";
+    document.getElementById("material4").required = true;
+    document.getElementById("descripcion4").required = true;
+    document.getElementById("alto4").required = true;
+    document.getElementById("ancho4").required = true;
+    document.getElementById("alto4").value = 0;
+    document.getElementById("ancho4").value = 0;
+    document.getElementById("uv4").required = true;
+    document.getElementById("laminado4").required = true;
+    document.getElementById("troquelado4").required = true;
+    document.getElementById("impresiont4").required = true;
+    document.getElementById("impresionr4").required = true;
+    document.getElementById("troquelado4").value = "";
+    document.getElementById("troqueladh4").value = "";
+
+
+
+  }
+}
 function quitar1() {
 
   if (document.getElementById('luno').style.display = "table-row"){
@@ -92,15 +171,21 @@ function quitar1() {
     document.getElementById("troquelado1").required = false;
     document.getElementById("impresiont1").required = false;
     document.getElementById("impresionr1").required = false;
+    document.getElementById('troqueladoadh1').required = false;
     document.getElementById("material1").value = "";
     document.getElementById("descripcion1").value = "";
-    document.getElementById("alto1").value = "";
-    document.getElementById("ancho1").value = "";
+    document.getElementById("alto1").value = 0;
+    document.getElementById("ancho1").value = 0;
     document.getElementById("uv1").value = "";
     document.getElementById("laminado1").value = "";
     document.getElementById("troquelado1").value = "";
     document.getElementById("impresiont1").value = "";
     document.getElementById("impresionr1").value = "";
+    document.getElementById("num_pantonest2").value = "0";
+    document.getElementById("num_pantonesr2").value = "0";
+    document.getElementById("troquel_existente2").value = "";
+    document.getElementById('troqueladoadh1').value = "";
+
   }
 }
 
@@ -118,17 +203,89 @@ function quitar2() {
     document.getElementById("laminado2").required = false;
     document.getElementById("troquelado2").required = false;
     document.getElementById("impresiont2").required = false;
-    document.getElementById("impresiont2").required = false;
+    document.getElementById("impresionr2").required = false;
+    document.getElementById('troqueladoadh2').required = false
 
     document.getElementById("material2").value = "";
     document.getElementById("descripcion2").value = "";
-    document.getElementById("alto2").value = "";
-    document.getElementById("ancho2").value = "";
+    document.getElementById("alto2").value = 0;
+    document.getElementById("ancho2").value = 0;
     document.getElementById("uv2").value = "";
     document.getElementById("laminado2").value = "";
     document.getElementById("troquelado2").value = "";
     document.getElementById("impresiont2").value = "";
-    document.getElementById("impresiont2").value = "";
+    document.getElementById("impresionr2").value = "";
+    document.getElementById("num_pantonest3").value = "0";
+    document.getElementById("num_pantonesr3").value = "0";
+    document.getElementById("troquel_existente3").value = "";
+    document.getElementById('troqueladoadh2').value = "";
+
+  }
+}
+
+function quitar3() {
+
+  if (document.getElementById('ltres').style.display = "table-row"){
+    document.getElementById('ltres').style.display = "none";
+    document.getElementById('boton_quitar2').style.display = "table-cell";
+    document.getElementById("material3").required = false;
+    document.getElementById("descripcion3").required = false;
+    document.getElementById("alto3").required = false;
+    document.getElementById("ancho3").required = false;
+    document.getElementById("uv3").required = false;
+    document.getElementById("laminado3").required = false;
+    document.getElementById("troquelado3").required = false;
+    document.getElementById("impresiont3").required = false;
+    document.getElementById("impresionr3").required = false;
+    document.getElementById('troqueladoadh3').required = false;
+    document.getElementById("material3").value = "";
+    document.getElementById("descripcion3").value = "";
+    document.getElementById("alto3").value = 0;
+    document.getElementById("ancho3").value = 0;
+    document.getElementById("uv3").value = "";
+    document.getElementById("laminado3").value = "";
+    document.getElementById("troquelado3").value = "";
+    document.getElementById("impresiont3").value = "";
+    document.getElementById("impresionr3").value = "";
+    document.getElementById("num_pantonest4").value = "0";
+    document.getElementById("num_pantonesr4").value = "0";
+    document.getElementById("troquel_existente4").value = "";
+    document.getElementById('troqueladoadh3').value = "";
+    document.getElementById('boton_quitar2').style.display = "table-cell";
+
+  }
+}
+
+function quitar4() {
+
+  if (document.getElementById('lcuatro').style.display = "table-row"){
+    document.getElementById('lcuatro').style.display = "none";
+    document.getElementById('boton_quitar3').style.display = "table-cell";
+    document.getElementById("material4").required = false;
+    document.getElementById("descripcion4").required = false;
+    document.getElementById("alto4").required = false;
+    document.getElementById("ancho4").required = false;
+    document.getElementById("uv4").required = false;
+    document.getElementById("laminado4").required = false;
+    document.getElementById("troquelado4").required = false;
+    document.getElementById("impresiont4").required = false;
+    document.getElementById("impresionr4").required = false;
+    document.getElementById('troqueladoadh4').required = false;
+    document.getElementById("material4").value = "";
+    document.getElementById("descripcion4").value = "";
+    document.getElementById("alto4").value = 0;
+    document.getElementById("ancho4").value = 0;
+    document.getElementById("uv4").value = "";
+    document.getElementById("laminado4").value = "";
+    document.getElementById("troquelado4").value = "";
+    document.getElementById("impresiont4").value = "";
+    document.getElementById("impresionr4").value = "";
+    document.getElementById("num_pantonest5").value = "0";
+    document.getElementById("num_pantonesr5").value = "0";
+    document.getElementById("troquel_existente5").value = "";
+    document.getElementById('troqueladoadh4').value = "";
+
+
   }
 }
 
@@ -138,6 +295,7 @@ function pantonet1(item){
 
   }else{
 document.getElementById("num_pantonest1").style.display = "none";
+document.getElementById("num_pantonest1").value = "";
 
   }
 }
@@ -149,6 +307,7 @@ function pantoner1(item){
 
   }else{
 document.getElementById("num_pantonesr1").style.display = "none";
+document.getElementById("num_pantonesr1").value = "";
 
   }
 }
@@ -159,6 +318,7 @@ function pantonet2(item){
 
   }else{
 document.getElementById("num_pantonest2").style.display = "none";
+document.getElementById("num_pantonest2").value = "";
 
   }
 }
@@ -169,6 +329,7 @@ function pantoner2(item){
 
   }else{
 document.getElementById("num_pantonesr2").style.display = "none";
+document.getElementById("num_pantonesr2").value = "";
 
   }
 }
@@ -179,6 +340,7 @@ function pantonet3(item){
 
   }else{
 document.getElementById("num_pantonest3").style.display = "none";
+document.getElementById("num_pantonest3").value = "";
 
   }
 }
@@ -189,10 +351,54 @@ function pantoner3(item){
 
   }else{
 document.getElementById("num_pantonesr3").style.display = "none";
+document.getElementById("num_pantonesr3").value = "";
 
   }
 }
 
+function pantonet4(item){
+  if(item.value == "Pantones"  || item.value == "F/C + Pantones"){
+    document.getElementById("num_pantonest4").style.display = "initial";
+
+  }else{
+document.getElementById("num_pantonest4").style.display = "none";
+document.getElementById("num_pantonest4").value = "";
+
+  }
+}
+
+function pantoner4(item){
+  if(item.value == "Pantones"  || item.value == "F/C + Pantones"){
+    document.getElementById("num_pantonesr4").style.display = "initial";
+
+  }else{
+document.getElementById("num_pantonesr4").style.display = "none";
+document.getElementById("num_pantonesr4").value = "";
+
+  }
+}
+
+function pantonet5(item){
+  if(item.value == "Pantones"  || item.value == "F/C + Pantones"){
+    document.getElementById("num_pantonest5").style.display = "initial";
+
+  }else{
+document.getElementById("num_pantonest5").style.display = "none";
+document.getElementById("num_pantonest5").value = "";
+
+  }
+}
+
+function pantoner5(item){
+  if(item.value == "Pantones"  || item.value == "F/C + Pantones"){
+    document.getElementById("num_pantonesr5").style.display = "initial";
+
+  }else{
+document.getElementById("num_pantonesr5").style.display = "none";
+document.getElementById("num_pantonesr5").value = "";
+
+  }
+}
 
 
 function filtros_busqueda(item) {
@@ -271,6 +477,30 @@ function check(){
 function verificar_tipo_trabajo(item){
   if(document.getElementById(item.value).value == "False"){
     document.getElementById('boton_agregar').style.display = "none";
+    document.getElementById("material2").value = "";
+    document.getElementById("descripcion2").value = "";
+    document.getElementById("alto2").value = "0";
+    document.getElementById("ancho2").value = "0";
+    document.getElementById("uv2").value = "";
+    document.getElementById("laminado2").value = "";
+    document.getElementById("troquelado2").value = "";
+    document.getElementById("impresiont2").value = "";
+    document.getElementById("impresiont2").value = "";
+    document.getElementById("material1").value = "";
+    document.getElementById("descripcion1").value = "";
+    document.getElementById("alto1").value = "0";
+    document.getElementById("ancho1").value = "0";
+    document.getElementById("uv1").value = "";
+    document.getElementById("laminado1").value = "";
+    document.getElementById("troquelado1").value = "";
+    document.getElementById("impresiont1").value = "";
+    document.getElementById("impresionr1").value = "";
+    document.getElementById("num_pantonesr3").value = "";
+    document.getElementById("num_pantonest3").value = "";
+    document.getElementById("num_pantonesr2").value = "";
+    document.getElementById("num_pantonest2").value = "";
+    document.getElementById('ldos').style.display = "none";
+    document.getElementById('luno').style.display = "none";
 
   }else{
     document.getElementById('boton_agregar').style.display = "table-cell";
@@ -287,8 +517,114 @@ function verificar_tipo_trabajo(item){
     document.getElementById("adicional_texto").value = "";
     document.getElementById("adicional").value = "";
   }
+
+
 }
 
+function chequeo_material(item){
+  if(item.value.slice(0,8) == "Adhesivo"){
+    document.getElementById('troqueladoadh').style.display = "initial";
+    document.getElementById('troquelado').style.display = "none";
+    document.getElementById('troqueladoadh').required = true;
+    document.getElementById('troquelado').required = false;
+    document.getElementById('troquelado').value = "";
+    document.getElementById("impresionr").value = "Sin impresion";
+    document.getElementById("impresionr").disabled = true;
+
+  }else{
+    document.getElementById('troqueladoadh').style.display = "none";
+    document.getElementById('troquelado').style.display = "initial";
+    document.getElementById('troquelado').required = true;
+    document.getElementById('troqueladoadh').required = false;
+    document.getElementById('troqueladoadh').value = "";
+    document.getElementById("impresionr").value = "";
+    document.getElementById("impresionr").disabled = false;
+  }
+}
+
+function chequeo_material2(item){
+  if(item.value.slice(0,8) == "Adhesivo"){
+    document.getElementById('troqueladoadh1').style.display = "initial";
+    document.getElementById('troquelado1').style.display = "none";
+    document.getElementById('troqueladoadh1').required = true;
+    document.getElementById('troquelado1').required = false;
+    document.getElementById('troquelado1').value = "";
+    document.getElementById("impresionr1").value = "Sin impresion";
+    document.getElementById("impresionr1").disabled = true;
+
+  }else{
+    document.getElementById('troqueladoadh1').style.display = "none";
+    document.getElementById('troquelado1').style.display = "initial";
+    document.getElementById('troquelado1').required = true;
+    document.getElementById('troqueladoadh1').required = false;
+    document.getElementById('troqueladoadh1').value = "";
+    document.getElementById("impresionr1").value = "";
+    document.getElementById("impresionr1").disabled = false;
+  }
+}
+
+function chequeo_material3(item){
+  if(item.value.slice(0,8) == "Adhesivo"){
+    document.getElementById('troqueladoadh2').style.display = "initial";
+    document.getElementById('troquelado2').style.display = "none";
+    document.getElementById('troqueladoadh2').required = true;
+    document.getElementById('troquelado2').required = false;
+    document.getElementById('troquelado2').value = "";
+    document.getElementById("impresionr2").value = "Sin impresion";
+    document.getElementById("impresionr2").disabled = true;
+
+  }else{
+    document.getElementById('troqueladoadh2').style.display = "none";
+    document.getElementById('troquelado2').style.display = "initial";
+    document.getElementById('troquelado2').required = true;
+    document.getElementById('troqueladoadh2').required = false;
+    document.getElementById('troqueladoadh2').value = "";
+    document.getElementById("impresionr2").value = "";
+    document.getElementById("impresionr2").disabled = false;
+  }
+}
+
+function chequeo_material4(item){
+  if(item.value.slice(0,8) == "Adhesivo"){
+    document.getElementById('troqueladoadh3').style.display = "initial";
+    document.getElementById('troquelado3').style.display = "none";
+    document.getElementById('troqueladoadh3').required = true;
+    document.getElementById('troquelado3').required = false;
+    document.getElementById('troquelado3').value = "";
+    document.getElementById("impresionr3").value = "Sin impresion";
+    document.getElementById("impresionr3").disabled = true;
+
+  }else{
+    document.getElementById('troqueladoadh3').style.display = "none";
+    document.getElementById('troquelado3').style.display = "initial";
+    document.getElementById('troquelado3').required = true;
+    document.getElementById('troqueladoadh3').required = false;
+    document.getElementById('troqueladoadh3').value = "";
+    document.getElementById("impresionr3").value = "";
+    document.getElementById("impresionr3").disabled = false;
+  }
+}
+
+function chequeo_material5(item){
+  if(item.value.slice(0,8) == "Adhesivo"){
+    document.getElementById('troqueladoadh4').style.display = "initial";
+    document.getElementById('troquelado4').style.display = "none";
+    document.getElementById('troqueladoadh4').required = true;
+    document.getElementById('troquelado4').required = false;
+    document.getElementById('troquelado4').value = "";
+    document.getElementById("impresionr4").value = "Sin impresion";
+    document.getElementById("impresionr4").disabled = true;
+
+  }else{
+    document.getElementById('troqueladoadh4').style.display = "none";
+    document.getElementById('troquelado4').style.display = "initial";
+    document.getElementById('troquelado4').required = true;
+    document.getElementById('troqueladoadh4').required = false;
+    document.getElementById('troqueladoadh4').value = "";
+    document.getElementById("impresionr4").value = "";
+    document.getElementById("impresionr4").disabled = false;
+  }
+}
 // Regular map
 function regular_map() {
 var var_location = new google.maps.LatLng(-2.1545748, -79.9270623);

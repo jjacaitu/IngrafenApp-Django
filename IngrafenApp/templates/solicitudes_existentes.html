@@ -56,7 +56,9 @@
 
   {% for cotizacion in cotizacion_existentes %}
   <h2>Solicitud de cotizacion #{{cotizacion.num_solicitud}}</h2>
+  {% if user.categoria == "ADM" or user.categoria == "COT" %}
   <h3 style="background-color:#ce5252;text-align:left;color:white">Cotizador asignado: {{cotizacion.procesado_por}}</h3>
+  {% endif %}
   <table class="table table-bordered solido">
 
   <tr>
@@ -162,6 +164,54 @@
 
 </tr>
 {% endif %}
+
+{% if cotizacion.material4 != "" %}
+<tr>
+  <td> {{ cotizacion.material4 }} </td>
+  <td> {{ cotizacion.descripcion_material4 }} </td>
+  <td>{{ cotizacion.medida_alto_4 }} X {{ cotizacion.medida_ancho_4 }} </td>
+  <td>
+    <label for="">Tiro:</label>
+    {{ cotizacion.impresion_tiro4 }}
+
+    <label for="">Retiro:</label>
+    {{ cotizacion.impresion_retiro4 }}
+   </td>
+  <td>
+    {{ cotizacion.uv4 }}
+    </td>
+    <td>
+    {{ cotizacion.laminado4 }}</td>
+<td>
+  {{ cotizacion.troquelado4 }}
+   </td>
+
+</tr>
+{% endif %}
+
+{% if cotizacion.material5 != "" %}
+<tr>
+  <td> {{ cotizacion.material5 }} </td>
+  <td> {{ cotizacion.descripcion_material5 }} </td>
+  <td>{{ cotizacion.medida_alto_5 }} X {{ cotizacion.medida_ancho_5 }} </td>
+  <td>
+    <label for="">Tiro:</label>
+    {{ cotizacion.impresion_tiro5 }}
+
+    <label for="">Retiro:</label>
+    {{ cotizacion.impresion_retiro5 }}
+   </td>
+  <td>
+    {{ cotizacion.uv5 }}
+    </td>
+    <td>
+    {{ cotizacion.laminado5 }}</td>
+<td>
+  {{ cotizacion.troquelado5 }}
+   </td>
+
+</tr>
+{% endif %}
 </table>
 
 <table class="table table-bordered solido">
@@ -181,7 +231,7 @@
   <form enctype="multipart/form-data" method="POST">
 
     {% csrf_token %}
-    {% for cotizacion in cotizaciones_existentes %}
+    {% for cotizacion in cotizacion_existentes %}
   <input type="hidden" name="numero1" value={{cotizacion.num_solicitud}}>
   {% endfor %}
   <div class="container">
@@ -193,12 +243,17 @@
   <input type="submit" name="boton_completar" value="COMPLETAR" class="btn btn-primary">
 
   {% endif %}
-  <input type="submit" name="boton_regresar" value="REGRESAR" class="btn btn-primary">
+  </form>
+  <form enctype="multipart/form-data" method="POST">
+    <input type="submit" name="boton_regresar" value="REGRESAR" class="btn btn-primary">
+  </form>
 
 
 
 
-</form>
+
+
+{% if user.categoria == "ADM" or user.categoria == "COT" %}
 <form enctype="multipart/form-data" method="POST">
   {% csrf_token %}
   {% for cotizacion in cotizacion_existentes %}
@@ -207,6 +262,7 @@
   <p style="text-align:center">
   <input type="submit" name="asignar" value="ASIGNAR" class="btn btn-danger btn-lg"></p>
 </form>
+{% endif %}
 </div>
 
 </table>
