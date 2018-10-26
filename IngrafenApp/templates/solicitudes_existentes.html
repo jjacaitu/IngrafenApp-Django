@@ -117,7 +117,7 @@
 
   </tr>
 
-{% if cotizacion.material2 != "" %}
+{% if cotizacion.material2 != "" and cotizacion.material2 != None %}
 <tr>
   <td> {{ cotizacion.material2 }} </td>
   <td> {{ cotizacion.descripcion_material2 }} </td>
@@ -141,7 +141,7 @@
 </tr>
 {% endif %}
 
-{% if cotizacion.material3 != "" %}
+{% if cotizacion.material3 != "" and cotizacion.material3 != None  %}
 <tr>
   <td> {{ cotizacion.material3 }} </td>
   <td> {{ cotizacion.descripcion_material3 }} </td>
@@ -165,7 +165,7 @@
 </tr>
 {% endif %}
 
-{% if cotizacion.material4 != "" %}
+{% if cotizacion.material4 != "" and cotizacion.material4 != None %}
 <tr>
   <td> {{ cotizacion.material4 }} </td>
   <td> {{ cotizacion.descripcion_material4 }} </td>
@@ -189,7 +189,7 @@
 </tr>
 {% endif %}
 
-{% if cotizacion.material5 != "" %}
+{% if cotizacion.material5 != "" and cotizacion.material5 != None %}
 <tr>
   <td> {{ cotizacion.material5 }} </td>
   <td> {{ cotizacion.descripcion_material5 }} </td>

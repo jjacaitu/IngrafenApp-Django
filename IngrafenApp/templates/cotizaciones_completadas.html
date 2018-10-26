@@ -312,12 +312,20 @@
 </tr>
 </table>
 
-  {% endfor %}
+
   </div>
   </table>
 <div class="container">
-  <input type="submit" name="regresar" value="REGRESAR" class="btn btn-primary" >
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
 
+<input type="hidden" name="cot_reutilizar" value="{{ cotizacion.num_solicitud }}">
+{% endfor %}
+  <input type="submit" name="regresar" value="REGRESAR" class="btn btn-primary" >
+  {% if user.categoria == "VEN" %}
+  <input type="submit" name="reutilizar" value="REUTILIZAR" class="btn btn-danger">
+{% endif %}
+</form>
 </div>
 {% endif %}
 

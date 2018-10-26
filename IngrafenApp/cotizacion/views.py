@@ -212,6 +212,47 @@ def solicitud_cot(request):
     cotizaciones_existentes = CotizacionesSolicitadas.objects.all().filter(cotizador__exact="")
     numero_solicitud = ""
 
+    if request.method == "POST" and request.POST.get("reutilizar") == "REUTILIZAR ULTIMA COTIZACION":
+        cot = request.POST.get("cot_reutilizar_ult")
+        ver_cinta = ""
+        try:
+            cotizacion_encontrada = models.CotizacionesSolicitadas.objects.get(num_solicitud = cot)
+            print("AQUI",cotizacion_encontrada)
+            if cotizacion_encontrada.detalles != "":
+                detalle = cotizacion_encontrada.detalles.split("\n")
+                ver_cinta = detalle[0].split()
+
+                detalle[0] = detalle[0].split()
+
+                try:
+                    if detalle[0][4] == "roja" or detalle[0][4] == "blanca":
+                        texto = detalle[0][8:] + detalle[1:]
+                        print(texto)
+                        if len(texto) != 0:
+                            texto = " ".join(texto)
+                            cotizacion_encontrada.detalles = texto
+                except:
+
+                    pass
+
+
+
+            if cotizacion_encontrada.numero_cotizacion != "":
+
+                cotizacion_encontrada.detalles += "\n" + "Referencia COT PAPYRUS #" + str(cotizacion_encontrada.numero_cotizacion)
+            data = {"nombre_cliente":cotizacion_encontrada.nombre_cliente,"trabajo":cotizacion_encontrada.trabajo,"cantidad":cotizacion_encontrada.cantidad}
+            cotizacion = Solicitud_cot(user=request.user,data=data)
+
+        except CotizacionesSolicitadas.DoesNotExist:
+            cotizacion_encontrada = "NO HAY"
+            cotizacion = Solicitud_cot(request.user)
+        busqueda = True
+        tipo_trabajo = models.TipoDeTrabajo.objects.all().order_by("trabajo")
+        materiales = models.Materiales.objects.all().order_by("material")
+
+
+        return render(request, "solicitud.html", {"ver_cinta":ver_cinta,"cotizacion":cotizacion,"tipo_trabajo":tipo_trabajo,"materiales":materiales,"busqueda":busqueda,"cotizacion_encontrada":cotizacion_encontrada,"cotizaciones_existentes":cotizaciones_existentes} )
+
     if request.method == "POST" and request.POST.get("Buscar"):
         cot = request.POST.get("cot_reutilizar")
         ver_cinta = ""
@@ -422,13 +463,13 @@ def cotizaciones_completadas(request):
     cotizadores = models.Usuarios.objects.all().filter(categoria="COT").order_by("username")
     vendedores = models.Usuarios.objects.all().filter(categoria="VEN").order_by("username")
     if request.method == "GET" and request.user.categoria == "VEN":
-        cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="").filter(vendedor=request.user)
+        cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="").filter(vendedor=request.user).order_by("-fecha_solicitada")
         paginator = Paginator(cotizaciones,10)
         page = request.GET.get('page')
         cotizaciones_completadas = paginator.get_page(page)
         return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"ver":ver,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"cotizadores":cotizadores,"vendedores":vendedores, "cotizaciones_existentes":cotizaciones_existentes})
     elif request.method == "GET":
-        cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="")
+        cotizaciones = CotizacionesSolicitadas.objects.all().exclude(cotizador__exact="").order_by("-fecha_solicitada")
         paginator = Paginator(cotizaciones,10)
         page = request.GET.get('page')
         cotizaciones_completadas = paginator.get_page(page)
@@ -542,6 +583,46 @@ def cotizaciones_completadas(request):
         cotizaciones_completadas = paginator.get_page(page)
         return render(request,"cotizaciones_completadas.html",{"cotizaciones_completadas":cotizaciones_completadas,"ver":ver,"clientes_creados":clientes_creados,"trabajos_creados":trabajos_creados,"cotizadores":cotizadores,"vendedores":vendedores, "cotizaciones_existentes":cotizaciones_existentes})
 
+    if request.method == "POST" and request.POST.get("reutilizar") == "REUTILIZAR":
+        cot = request.POST.get("cot_reutilizar")
+        ver_cinta = ""
+        try:
+            cotizacion_encontrada = models.CotizacionesSolicitadas.objects.get(num_solicitud = cot)
+            print("AQUI",cotizacion_encontrada)
+            if cotizacion_encontrada.detalles != "":
+                detalle = cotizacion_encontrada.detalles.split("\n")
+                ver_cinta = detalle[0].split()
+
+                detalle[0] = detalle[0].split()
+
+                try:
+                    if detalle[0][4] == "roja" or detalle[0][4] == "blanca":
+                        texto = detalle[0][8:] + detalle[1:]
+                        print(texto)
+                        if len(texto) != 0:
+                            texto = " ".join(texto)
+                            cotizacion_encontrada.detalles = texto
+                except:
+
+                    pass
+
+
+
+            if cotizacion_encontrada.numero_cotizacion != "":
+
+                cotizacion_encontrada.detalles += "\n" + "Referencia COT PAPYRUS #" + str(cotizacion_encontrada.numero_cotizacion)
+            data = {"nombre_cliente":cotizacion_encontrada.nombre_cliente,"trabajo":cotizacion_encontrada.trabajo,"cantidad":cotizacion_encontrada.cantidad}
+            cotizacion = Solicitud_cot(user=request.user,data=data)
+
+        except CotizacionesSolicitadas.DoesNotExist:
+            cotizacion_encontrada = "NO HAY"
+            cotizacion = Solicitud_cot(request.user)
+        busqueda = True
+        tipo_trabajo = models.TipoDeTrabajo.objects.all().order_by("trabajo")
+        materiales = models.Materiales.objects.all().order_by("material")
+
+
+        return render(request, "solicitud.html", {"ver_cinta":ver_cinta,"cotizacion":cotizacion,"tipo_trabajo":tipo_trabajo,"materiales":materiales,"busqueda":busqueda,"cotizacion_encontrada":cotizacion_encontrada,"cotizaciones_existentes":cotizaciones_existentes} )
 
 @login_required
 def creacion_material(request):

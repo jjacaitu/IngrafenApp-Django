@@ -4,6 +4,11 @@
 <div class="container">
   {% if solicitado %}
   <h2>COTIZACIÓN #{{numero_solicitud.num_solicitud }} SOLICITADA!</h2>
+  <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="cot_reutilizar_ult" value="{{numero_solicitud.num_solicitud }}">
+    <p style="text-align:center;margin:40px"> <input type="submit" name="reutilizar" value="REUTILIZAR ULTIMA COTIZACION" class="btn btn-danger btn-lg"></p>
+  </form>
   {% else %}
   {% if busqueda and cotizacion_encontrada == "NO HAY" %}
   <h2>COTIZACIÓN A REUTILIZAR NO ENCONTRADA</h2>
